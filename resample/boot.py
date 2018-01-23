@@ -6,7 +6,17 @@ from .metric import MultivariateMetric
 
 
 def boot(data, statistic, r=10000):
-    r=int(r)
+    """Creates UnivariateMetric or MultivariateMetric objects.
+    
+    Args:
+        data (np.array, pd.Series, np.DataFrame): input data to be bootstrapped
+        statistic (function): statistic to be calculated
+        r (int): number of bootstrap replications
+    
+    Returns:
+        Metric objects used to get bootstrap estimates
+    """
+    r=int(r) #make sure r is an int
     results = []
     sample_size = len(data)
     if isinstance(data, np.ndarray):
@@ -35,4 +45,5 @@ def boot(data, statistic, r=10000):
             return MultivariateMetric(results, statistic, statistic(data))
     else:
         raise Exception("data type not supported")
+
 
