@@ -1,8 +1,8 @@
 import numpy as np
 import pandas as pd
 
-from .metric import UnivariateMetric
-from .metric import MultivariateMetric
+from .result import UnivariateResult
+from .result import MultivariateResult
 
 
 def boot(data, statistic, r=10000):
