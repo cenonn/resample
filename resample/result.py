@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from scipy import stats
 
 
-class UnivariateMetric:
+class UnivariateResult:
     """Defines an object for univariate bootstraps
 
         Attributes:
@@ -28,7 +28,7 @@ class UnivariateMetric:
         """A function that takes no arguments and returns the bias
             of the statistic.
         """
-        return np.mean(self.results) - observed
+        return np.mean(self.results) - self.observed
 
     def point_estimate(self, center, correction=False):
         """Calculate a point estimate from the bootstrap distribution
@@ -44,7 +44,7 @@ class UnivariateMetric:
         if not correction:
             return center(self.results)
         else:
-            return center(self.results) - bias()
+            return center(self.results) - self.bias()
     
     def plot(self, bins=30):
         """Create a histogram of the bootstrap distribution
@@ -79,7 +79,7 @@ class UnivariateMetric:
         else:
             raise Exception("unsupported ci type")
             
-class MultivariateMetric:
+class MultivariateResult:
     """Defines an object for multivariate bootstraps
 
         Attributes:
@@ -104,9 +104,9 @@ class MultivariateMetric:
         """A function that takes no arguments and returns an array
             that contains the bias of the statistic for all variables.
         """
-        return np.mean(self.results) - observed
+        return np.mean(self.results) - self.observed
     
-    def point_estimate(self, center):
+    def point_estimate(self, center, correction=False):
         """Calculate a point estimate of each variable
 
         Args:
@@ -119,7 +119,7 @@ class MultivariateMetric:
         if not correction:
             return np.apply_along_axis(center, 0, self.results)
         else:
-            return np.apply_along_axis(center, 0, self.results) - bias()
+            return np.apply_along_axis(center, 0, self.results) - self.bias()
 
     def plot(self, col, bins=30):
         """Create a histogram of one of the bootstrap distribution 

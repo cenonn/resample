@@ -24,25 +24,25 @@ def boot(data, statistic, r=10000):
             for _ in range(r):
                 boot_sample = np.random.choice(data, sample_size, replace=True)
                 results.append(statistic(boot_sample))
-            return UnivariateMetric(results, statistic, statistic(data))
+            return UnivariateResult(results, statistic, statistic(data))
         else:
             raise Exception("numpy array must contain only 1 variable")
     elif isinstance(data, pd.Series): 
         for _ in range(r):
             boot_sample = data.sample(n=sample_size, replace=True)
             results.append(statistic(boot_sample))
-        return UnivariateMetric(results, statistic, statistic(data))
+        return UnivariateResult(results, statistic, statistic(data))
     elif isinstance(data, pd.DataFrame): 
         if len(data.columns) == 1:
             for _ in range(r):
                 boot_sample = data.sample(n=sample_size, replace=True).as_matrix()
                 results.append(statistic(boot_sample))
-            return UnivariateMetric(results, statistic, statistic(data))
+            return UnivariateResult(results, statistic, statistic(data))
         else: 
             for _ in range(r):
                 boot_sample = data.sample(n=sample_size, replace=True)
                 results.append(boot_sample.apply(statistic))
-            return MultivariateMetric(results, statistic, statistic(data))
+            return MultivariateResult(results, statistic, np.apply_along_axis(statistic, 0, data))
     else:
         raise Exception("data type not supported")
 
