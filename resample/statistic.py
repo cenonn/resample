@@ -1,22 +1,25 @@
 import numpy as np
+import numbers
 
 
 class Statistic:
-    """Defines a user defined Statistic object.
+    """Defines a Statistic object with user defined function.
 
-    Args:
-        func (function): statistic to be calculated
-        is_valid (boolean): whether the function is valid to bootstrap
+            :param func: statistic to be calculated
+            :param is_valid: whether the function is valid to bootstrap
+            :type func: function
+            :type is_valid: boolean
     """
+
     def __init__(self, func, is_valid=False):
         self.func = func
         self.is_valid = is_valid
 
     def __add__(self, other):
         if isinstance(other, Statistic):
-            valid = True if self.is_valid and other.is_valid else False
+            valid = self.is_valid and other.is_valid
             return Statistic(lambda x: self.func(x) + other.func(x), valid)
-        elif isinstance(other, (int, float)):
+        elif isinstance(other, numbers.Numbers):
             return Statistic(lambda x: self.func(x) + other, self.is_valid)
         else:
             raise Exception("other is of type " + string(type(other)))
@@ -26,9 +29,9 @@ class Statistic:
 
     def __sub__(self, other):
         if isinstance(other, Statistic):
-            valid = True if self.is_valid and other.is_valid else False
+            valid = self.is_valid and other.is_valid
             return Statistic(lambda x: self.func(x) - other.func(x), valid)
-        elif isinstance(other, (int, float)):
+        elif isinstance(other, numbers.Numbers):
             return Statistic(lambda x: self.func(x) - other, self.is_valid)
         else:
             raise Exception("other is of type " + string(type(other)))
@@ -38,9 +41,9 @@ class Statistic:
 
     def __mul__(self, other):
         if isinstance(other, Statistic):
-            valid = True if self.is_valid and other.is_valid else False
+            valid = self.is_valid and other.is_valid
             return Statistic(lambda x: self.func(x) * other.func(x), valid)
-        elif isinstance(other, (int, float)):
+        elif isinstance(other, numbers.Numbers):
             return Statistic(lambda x: self.func(x) * other, self.is_valid)
         else:
             raise Exception("other is of type " + string(type(other)))
@@ -50,9 +53,9 @@ class Statistic:
 
     def __truediv__(self, other):
         if isinstance(other, Statistic):
-            valid = True if self.is_valid and other.is_valid else False
+            valid = self.is_valid and other.is_valid
             return Statistic(lambda x: self.func(x) / other.func(x), valid)
-        elif isinstance(other, (int, float)):
+        elif isinstance(other, numbers.Numbers):
             return Statistic(lambda x: self.func(x) / other, self.is_valid)
         else:
             raise Exception("other is of type " + string(type(other)))
@@ -60,26 +63,67 @@ class Statistic:
     def __rtruediv__(self, other):
         return self.__truediv__(other)
 
-class MeanStatistic(Statistic):
+
+class Mean(Statistic):
+    """Defines valid Statistic object with a mean function.
+
+        :param none:
+
+    """
     def __init__(self):
         super().__init__(np.mean, True)
 
-class MedianStatistic(Statistic):
-    def __init__(self):
-        super().__init__(np.median, True)
 
-class SDStatistic(Statistic):
+class Quantile(Statistic):
+    """Defines valid Statistic object with a quantile function.
+
+        :param q: quantile to be calculated
+        :type q: float
+    """
+    def __init__(self, q):
+        if (q > 1.0 or q < 0.0):
+            raise Exception("q must be between 0.0 and 1.0")
+        if (q == 0.5):
+            super().__init__(np.median, True)
+        else:
+            super().__init__(lambda x: np.percentile(x, q * 100), False)
+
+
+class SD(Statistic):
+    """Defines valid Statistic object with a sd function.
+
+        :param none:
+
+    """
     def __init__(self):
         super().__init__(np.std, True)
 
-class VarStatistic(Statistic):
+
+class Var(Statistic):
+    """Defines valid Statistic object with a variance function.
+
+        :param none:
+
+    """
     def __init__(self):
         super().__init__(np.var, True)
 
-class MaxStatistic(Statistic):
+
+class Max(Statistic):
+    """Defines valid Statistic object with a max function.
+
+        :param none:
+
+    """
     def __init__(self):
         super().__init__(np.amax, False)
 
-class MinStatistic(Statistic):
+
+class Min(Statistic):
+    """Defines valid Statistic object with a min function.
+
+        :param none:
+
+    """
     def __init__(self):
         super().__init__(np.amin, False)

@@ -7,24 +7,25 @@ from .statistic import Statistic
 
 
 def boot(data, statistic, r=10000):
-    """Creates UnivariateMetric or MultivariateMetric objects.
+    """Creates UnivariateResult or MultivariateResult objects.
 
-    Args:
-        data (np.array, pd.Series, np.DataFrame): input data to be bootstrapped
-        statistic (statistic, function): statistic to be calculated
-        r (int): number of bootstrap replications
+        :param data: input data to be bootstrapped
+        :param statistic: statistic to be calculated
+        :param r: number of bootstrap replications
+        :type data: np.array, pd.Series, np.DataFrame
+        :type statistic: Statistic, function
+        :type t: int
+        :return: results from the bootstrap simulation
+        :rtype: UnivariateResult, MultivariateResult
 
-    Returns:
-        Metric objects used to get bootstrap estimates
     """
     if isinstance(statistic, Statistic):
         func = statistic.func
         if not statistic.is_valid:
-            raise Exception("results from bootstrap may not be valid")
-            # print("results from bootstrap may not be valid")
+            raise Warning("results from bootstrap may not be valid")
     else:
         func = statistic
-    r = int(r) #make sure r is an int
+    r = int(r)  # make sure r is an int
     results = []
     sample_size = len(data)
     if isinstance(data, np.ndarray):
