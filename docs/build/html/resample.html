@@ -1,0 +1,352 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>resample modules &#8212; resample 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Getting Started" href="quickstart.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="quickstart.html" title="Getting Started"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">resample 0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="resample-modules">
+<h1>resample modules<a class="headerlink" href="#resample-modules" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-contents">
+<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-resample.boot">
+<span id="resample-boot-module"></span><h2>resample.boot module<a class="headerlink" href="#module-resample.boot" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="resample.boot.boot">
+<code class="descclassname">resample.boot.</code><code class="descname">boot</code><span class="sig-paren">(</span><em>data</em>, <em>statistic</em>, <em>r=10000</em><span class="sig-paren">)</span><a class="headerlink" href="#resample.boot.boot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates UnivariateResult or MultivariateResult objects.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>data (np.array, pd.Series, np.DataFrame): input data to be bootstrapped
+statistic (statistic, function): statistic to be calculated
+r (int): number of bootstrap replications</dd>
+<dt>Returns:</dt>
+<dd>Metric objects used to get bootstrap estimates</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-resample.result">
+<span id="resample-result-module"></span><h2>resample.result module<a class="headerlink" href="#module-resample.result" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="resample.result.MultivariateResult">
+<em class="property">class </em><code class="descclassname">resample.result.</code><code class="descname">MultivariateResult</code><span class="sig-paren">(</span><em>results</em>, <em>statistic</em>, <em>observed</em><span class="sig-paren">)</span><a class="headerlink" href="#resample.result.MultivariateResult" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Defines an object for multivariate bootstraps</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd><dl class="first docutils">
+<dt>results (np.array): array that contains the estimate</dt>
+<dd>for every bootstrap replication for every variable</dd>
+</dl>
+<p class="last">statistic (function): statistic to be calculated
+observed (np.array): the sample statistics from the original data</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="resample.result.MultivariateResult.bias">
+<code class="descname">bias</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#resample.result.MultivariateResult.bias" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function that takes no arguments and returns an array
+that contains the bias of the statistic for all variables.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="resample.result.MultivariateResult.ci">
+<code class="descname">ci</code><span class="sig-paren">(</span><em>col</em>, <em>confidence=0.95</em>, <em>kind='efron'</em><span class="sig-paren">)</span><a class="headerlink" href="#resample.result.MultivariateResult.ci" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate an interval estimate of the statistic for one variable</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">col (int): the index of the variable
+confidence (float): the confidence level of the estimate,</p>
+<blockquote>
+<div>between 0.0 and 1.0</div></blockquote>
+<dl class="last docutils">
+<dt>kind (string): type of interval to calculate, either efrom or</dt>
+<dd>percentile intervals</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd>A tuple of the interval</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="resample.result.MultivariateResult.plot">
+<code class="descname">plot</code><span class="sig-paren">(</span><em>col</em>, <em>bins=30</em><span class="sig-paren">)</span><a class="headerlink" href="#resample.result.MultivariateResult.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a histogram of one of the bootstrap distribution</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>col (int): the index of the variable to plot
+bins (int): the number of bins for the histogram</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="resample.result.MultivariateResult.point_estimate">
+<code class="descname">point_estimate</code><span class="sig-paren">(</span><em>center</em>, <em>correction=False</em><span class="sig-paren">)</span><a class="headerlink" href="#resample.result.MultivariateResult.point_estimate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate a point estimate of each variable</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>center (function): mesure of center to use
+correction (boolean): if True, apply bias correction</dd>
+<dt>Returns:</dt>
+<dd>An array with a point estimate for each variable</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="resample.result.MultivariateResult.se">
+<code class="descname">se</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#resample.result.MultivariateResult.se" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function that takes no arguments and returns an array
+that contains the standard deviation of the statistic 
+for all variables.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="resample.result.UnivariateResult">
+<em class="property">class </em><code class="descclassname">resample.result.</code><code class="descname">UnivariateResult</code><span class="sig-paren">(</span><em>results</em>, <em>statistic</em>, <em>observed</em><span class="sig-paren">)</span><a class="headerlink" href="#resample.result.UnivariateResult" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Defines an object for univariate bootstraps</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd><dl class="first docutils">
+<dt>results (np.array): array that contains the estimate</dt>
+<dd>for every bootstrap replication</dd>
+</dl>
+<p class="last">statistic (function): statistic to be calculated
+observed (int, float): the sample statistic from the original data</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="resample.result.UnivariateResult.bias">
+<code class="descname">bias</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#resample.result.UnivariateResult.bias" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function that takes no arguments and returns the bias
+of the statistic.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="resample.result.UnivariateResult.ci">
+<code class="descname">ci</code><span class="sig-paren">(</span><em>confidence=0.95</em>, <em>kind='efron'</em><span class="sig-paren">)</span><a class="headerlink" href="#resample.result.UnivariateResult.ci" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate an interval estimate of the statistic</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>confidence (float): the confidence level of the estimate, </dt>
+<dd>between 0.0 and 1.0</dd>
+<dt>kind (string): type of interval to calculate, either efrom or</dt>
+<dd>percentile intervals</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd>A tuple of the interval</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="resample.result.UnivariateResult.plot">
+<code class="descname">plot</code><span class="sig-paren">(</span><em>bins=30</em><span class="sig-paren">)</span><a class="headerlink" href="#resample.result.UnivariateResult.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a histogram of the bootstrap distribution</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>bins (int): the number of bins for the histogram</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="resample.result.UnivariateResult.point_estimate">
+<code class="descname">point_estimate</code><span class="sig-paren">(</span><em>center</em>, <em>correction=False</em><span class="sig-paren">)</span><a class="headerlink" href="#resample.result.UnivariateResult.point_estimate" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Calculate a point estimate from the bootstrap distribution</dt>
+<dd>using center as a point estimate.</dd>
+<dt>Args:</dt>
+<dd>center (function): measure of center to use
+correction (boolean): if True, apply bias correction</dd>
+<dt>Returns:</dt>
+<dd>A numeric estimate of the center</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="resample.result.UnivariateResult.se">
+<code class="descname">se</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#resample.result.UnivariateResult.se" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function that takes no arguments and returns the standard deviation
+of the statistic.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-resample.statistic">
+<span id="resample-statistic-module"></span><h2>resample.statistic module<a class="headerlink" href="#module-resample.statistic" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="resample.statistic.Max">
+<em class="property">class </em><code class="descclassname">resample.statistic.</code><code class="descname">Max</code><a class="headerlink" href="#resample.statistic.Max" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#resample.statistic.Statistic" title="resample.statistic.Statistic"><code class="xref py py-class docutils literal"><span class="pre">resample.statistic.Statistic</span></code></a></p>
+<p>Defines valid Statistic object with a max function.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="resample.statistic.Mean">
+<em class="property">class </em><code class="descclassname">resample.statistic.</code><code class="descname">Mean</code><a class="headerlink" href="#resample.statistic.Mean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#resample.statistic.Statistic" title="resample.statistic.Statistic"><code class="xref py py-class docutils literal"><span class="pre">resample.statistic.Statistic</span></code></a></p>
+<p>Defines valid Statistic object with a mean function.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="resample.statistic.Min">
+<em class="property">class </em><code class="descclassname">resample.statistic.</code><code class="descname">Min</code><a class="headerlink" href="#resample.statistic.Min" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#resample.statistic.Statistic" title="resample.statistic.Statistic"><code class="xref py py-class docutils literal"><span class="pre">resample.statistic.Statistic</span></code></a></p>
+<p>Defines valid Statistic object with a min function.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="resample.statistic.Quantile">
+<em class="property">class </em><code class="descclassname">resample.statistic.</code><code class="descname">Quantile</code><span class="sig-paren">(</span><em>q</em><span class="sig-paren">)</span><a class="headerlink" href="#resample.statistic.Quantile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#resample.statistic.Statistic" title="resample.statistic.Statistic"><code class="xref py py-class docutils literal"><span class="pre">resample.statistic.Statistic</span></code></a></p>
+<p>Defines valid Statistic object with a quantile function.</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd>q (float from 0.0-1.0): quantile to be calculated</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="resample.statistic.SD">
+<em class="property">class </em><code class="descclassname">resample.statistic.</code><code class="descname">SD</code><a class="headerlink" href="#resample.statistic.SD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#resample.statistic.Statistic" title="resample.statistic.Statistic"><code class="xref py py-class docutils literal"><span class="pre">resample.statistic.Statistic</span></code></a></p>
+<p>Defines valid Statistic object with a sd function.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="resample.statistic.Statistic">
+<em class="property">class </em><code class="descclassname">resample.statistic.</code><code class="descname">Statistic</code><span class="sig-paren">(</span><em>func</em>, <em>is_valid=False</em><span class="sig-paren">)</span><a class="headerlink" href="#resample.statistic.Statistic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Defines a user defined Statistic object. This will typically be an
+invalid function, thus will raise a warning during the bootstrap.</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd>func (function): statistic to be calculated
+is_valid (boolean): whether the function is valid to bootstrap</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="resample.statistic.Var">
+<em class="property">class </em><code class="descclassname">resample.statistic.</code><code class="descname">Var</code><a class="headerlink" href="#resample.statistic.Var" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#resample.statistic.Statistic" title="resample.statistic.Statistic"><code class="xref py py-class docutils literal"><span class="pre">resample.statistic.Statistic</span></code></a></p>
+<p>Defines valid Statistic object with a variance function.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">resample modules</a><ul>
+<li><a class="reference internal" href="#module-contents">Module contents</a></li>
+<li><a class="reference internal" href="#module-resample.boot">resample.boot module</a></li>
+<li><a class="reference internal" href="#module-resample.result">resample.result module</a></li>
+<li><a class="reference internal" href="#module-resample.statistic">resample.statistic module</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="quickstart.html"
+                        title="previous chapter">Getting Started</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/resample.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="quickstart.html" title="Getting Started"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">resample 0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Robert Cenon.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
+    </div>
+  </body>
+</html>
