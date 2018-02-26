@@ -57,11 +57,30 @@
             
   <div class="section" id="advanced-tutorial">
 <h1>Advanced Tutorial<a class="headerlink" href="#advanced-tutorial" title="Permalink to this headline">¶</a></h1>
+<p>resample provides two other features when performing bootstraps, multivariate
+bootstraps and validity checks through Statistics objects.</p>
 <div class="section" id="multivariate-bootstraps">
 <h2>Multivariate Bootstraps<a class="headerlink" href="#multivariate-bootstraps" title="Permalink to this headline">¶</a></h2>
+<p>Performing multivariate bootstraps with resample simply imvolves passing a
+pandas dataframe with all the columns to bootstrap:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">multi_boostrap</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">boot</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">)</span> <span class="c1">#insert line with making the df</span>
+</pre></div>
+</div>
+<p>This will return a MultivariateResults object. These objects function the same
+way their univariate counterpart does; the only difference is that some of the
+methods now have a &#8216;col&#8217; argument to specify which column to look at:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">bootstrap</span><span class="o">.</span><span class="n">se</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="statistics-objects">
 <h2>Statistics Objects<a class="headerlink" href="#statistics-objects" title="Permalink to this headline">¶</a></h2>
+<p>Certain estimators will not be valid to bootstrap. This includes statistics
+like the maximum and minimum. resample solves this problem by building up
+estimators using Statistics objects.</p>
+<p>These objects match up to commonly found statistics and hold information
+on whether they are valid or not. More complicated estimators can be created by
+adding, subtracting, etc with other estimators and numeric values.</p>
 </div>
 </div>
 

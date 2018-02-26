@@ -1,5 +1,8 @@
 Getting Started
 -----------------------------------
+Resampling in statistics refers to any method that draws repeated samples from
+the original dataset. This package intends to implement some of these methods;
+the first of which is the bootstrap. 
 
 Bootstrapping is a statistical technique developed by Bradley Efron (1979) that
 creates measures of accuracy for almost any statistic. The purpose of resample
@@ -21,7 +24,7 @@ Go to the resample directory and enter::
 After the install is complete, place the following line in any pyhon
 environment to use resample::
 
-    import resmaple as rs
+    import resample as rs
 
 
 

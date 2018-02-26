@@ -57,18 +57,23 @@
             
   <div class="section" id="basic-tutorial">
 <h1>Basic Tutorial<a class="headerlink" href="#basic-tutorial" title="Permalink to this headline">¶</a></h1>
+<p>Throughout this tutorial, we will be using a the <em>insert dataset name and link
+here</em>.:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">resample</span> <span class="k">as</span> <span class="nn">rs</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
 <div class="section" id="boot">
 <h2>boot()<a class="headerlink" href="#boot" title="Permalink to this headline">¶</a></h2>
 <p>The boot() function encompasses the actual bootstrap algorithm and is the
 fundamental piece of the package. In order to perform a univariate
 bootstrap, a dataset and the estimator to be calculated are passed
 into the function:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">resample</span> <span class="k">as</span> <span class="nn">rs</span>
-
-<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;car_weights.data&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-<span class="n">bootstrap</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">boot</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">bootstrap</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">boot</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The boot function will then perform 10,000 boostrap simulations by
@@ -89,7 +94,7 @@ this object will usually be to calculate the standard error of our estimate:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">bootstrap</span><span class="o">.</span><span class="n">se</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>It can also be used to plot a histograme of the bootstrap distribution:</p>
+<p>It can also be used to plot a histogram of the bootstrap distribution:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">bootstrap</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>

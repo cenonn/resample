@@ -1,10 +1,32 @@
 Advanced Tutorial
 ===================================
+resample provides two other features when performing bootstraps, multivariate
+bootstraps and validity checks through Statistics objects. 
 
 Multivariate Bootstraps
 -----------------------------------
+Performing multivariate bootstraps with resample simply imvolves passing a
+pandas dataframe with all the columns to bootstrap::
+
+    multi_boostrap = rs.boot(data, np.mean) #insert line with making the df
+
+This will return a MultivariateResults object. These objects function the same
+way their univariate counterpart does; the only difference is that some of the
+methods now have a 'col' argument to specify which column to look at::
+
+    bootstrap.se(col=2)
+
+
 
 
 Statistics Objects
 -----------------------------------
+Certain estimators will not be valid to bootstrap. This includes statistics
+like the maximum and minimum. resample solves this problem by building up
+estimators using Statistics objects. 
+
+These objects match up to commonly found statistics and hold information 
+on whether they are valid or not. More complicated estimators can be created by
+adding, subtracting, etc with other estimators and numeric values. 
+
 
