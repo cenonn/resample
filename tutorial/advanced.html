@@ -63,13 +63,13 @@ bootstraps and validity checks through Statistics objects.</p>
 <h2>Multivariate Bootstraps<a class="headerlink" href="#multivariate-bootstraps" title="Permalink to this headline">¶</a></h2>
 <p>Performing multivariate bootstraps with resample simply imvolves passing a
 pandas dataframe with all the columns to bootstrap:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">multi_boostrap</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">boot</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">)</span> <span class="c1">#insert line with making the df</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">multi_boostrap</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">boot</span><span class="p">(</span><span class="n">data</span><span class="p">[[</span><span class="s2">&quot;mec&quot;</span><span class="p">,</span> <span class="s2">&quot;vec&quot;</span><span class="p">]],</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>This will return a MultivariateResults object. These objects function the same
 way their univariate counterpart does; the only difference is that some of the
 methods now have a &#8216;col&#8217; argument to specify which column to look at:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">bootstrap</span><span class="o">.</span><span class="n">se</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">multi_bootstrap</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

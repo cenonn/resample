@@ -6,7 +6,7 @@
 Welcome to resample's documentation!
 ====================================
 
-Resample is Python framework for performing bootstrap simulations.
+resample is Python framework for performing resampling methods.
 
 
 .. toctree::

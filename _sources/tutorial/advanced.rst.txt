@@ -8,13 +8,13 @@ Multivariate Bootstraps
 Performing multivariate bootstraps with resample simply imvolves passing a
 pandas dataframe with all the columns to bootstrap::
 
-    multi_boostrap = rs.boot(data, np.mean) #insert line with making the df
+    multi_boostrap = rs.boot(data[["mec", "vec"]], np.mean)
 
 This will return a MultivariateResults object. These objects function the same
 way their univariate counterpart does; the only difference is that some of the
 methods now have a 'col' argument to specify which column to look at::
 
-    bootstrap.se(col=2)
+    multi_bootstrap.plot(col=1)
 
 
 
