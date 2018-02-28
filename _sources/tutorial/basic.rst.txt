@@ -1,3 +1,5 @@
+.. _basic:
+
 Basic Tutorial
 ===================================
 Throughout this tutorial, we will be using the score dataset from Mardia, Kent,
@@ -8,7 +10,7 @@ dataset that Efron has used in his book, *An Introduction to the Bootstrap*::
     import pandas as pd
     import resample as rs
 
-    data = pd.read_csv("score.csv", header=None)
+    data = pd.read_csv("score.csv")
     data.head()
 
 === === === === ===
@@ -31,7 +33,7 @@ fundamental piece of the package. In order to perform a univariate
 bootstrap, a dataset and the estimator to be calculated are passed
 into the function::
     
-    bootstrap = rs.boot(data["mec"], np.mean)
+    bootstrap = rs.boot(data["mec"], np.var)
 
 The boot function will then perform 10,000 boostrap simulations by 
 default. This returns a UnivariateResults object.
@@ -39,10 +41,10 @@ default. This returns a UnivariateResults object.
 A few things to note:
 
 #. The dataset needs to be either an np.array, pd.Series, or univariate
-    pd.Dataframe
+   pd.DataFrame
 #. The function passed can be any function, user-defined or otherwise, as long
-    as it returns a single value. User-defined functions will be looked at 
-    more indepth in the Advanced Tutorial.
+   as it returns a single value. User-defined functions will be looked at more
+   indepth in the Advanced Tutorial.
 
 
 Results Objects
@@ -56,6 +58,19 @@ this object will usually be to calculate the standard error of our estimate::
 It can also be used to plot a histogram of the bootstrap distribution::
 
     bootstrap.plot()
+
+.. plot::
+
+    import pandas as pd
+    import numpy as np
+    import resample as rs
+
+    data = pd.read_csv("score.csv")
+    bootstrap = rs.boot(data["mec"], np.var)
+    bootstrap.plot()
+
+These objects have more functionality beyond these two examples. See the 
+:doc:`modules <../refs/modules>` for more information.
 
 
 

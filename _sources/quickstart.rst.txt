@@ -1,3 +1,5 @@
+.. _quickstart:
+
 Getting Started
 -----------------------------------
 Resampling in statistics refers to any method that draws repeated samples from

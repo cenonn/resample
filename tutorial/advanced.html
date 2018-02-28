@@ -56,12 +56,13 @@
           <div class="body" role="main">
             
   <div class="section" id="advanced-tutorial">
-<h1>Advanced Tutorial<a class="headerlink" href="#advanced-tutorial" title="Permalink to this headline">¶</a></h1>
-<p>resample provides two other features when performing bootstraps, multivariate
-bootstraps and validity checks through Statistics objects.</p>
+<span id="advanced"></span><h1>Advanced Tutorial<a class="headerlink" href="#advanced-tutorial" title="Permalink to this headline">¶</a></h1>
+<p>resample provides other features when performing bootstraps, multivariate
+bootstraps, user-defined estimators, and validity checks through Statistics
+objects.</p>
 <div class="section" id="multivariate-bootstraps">
 <h2>Multivariate Bootstraps<a class="headerlink" href="#multivariate-bootstraps" title="Permalink to this headline">¶</a></h2>
-<p>Performing multivariate bootstraps with resample simply imvolves passing a
+<p>Performing multivariate bootstraps with resample simply involves passing a
 pandas dataframe with all the columns to bootstrap:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">multi_boostrap</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">boot</span><span class="p">(</span><span class="n">data</span><span class="p">[[</span><span class="s2">&quot;mec&quot;</span><span class="p">,</span> <span class="s2">&quot;vec&quot;</span><span class="p">]],</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">)</span>
 </pre></div>
@@ -72,15 +73,26 @@ methods now have a &#8216;col&#8217; argument to specify which column to look at
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">multi_bootstrap</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>(<a class="reference external" href="../tutorial/advanced-1.py">Source code</a>, <a class="reference external" href="../tutorial/advanced-1.png">png</a>, <a class="reference external" href="../tutorial/advanced-1.hires.png">hires.png</a>, <a class="reference external" href="../tutorial/advanced-1.pdf">pdf</a>)</p>
+<div class="figure">
+<img alt="../_images/advanced-1.png" src="../_images/advanced-1.png" />
+</div>
+</div>
+<div class="section" id="user-defined-estimators">
+<h2>User-defined Estimators<a class="headerlink" href="#user-defined-estimators" title="Permalink to this headline">¶</a></h2>
+<p>All of the previous examples utilize numpy functions as their estimators.
+Users can define their own functions to pass into boot(). This in conjunction
+with multivariate datasets can be extremely powerful. <em>insert example with
+regression</em></p>
 </div>
 <div class="section" id="statistics-objects">
 <h2>Statistics Objects<a class="headerlink" href="#statistics-objects" title="Permalink to this headline">¶</a></h2>
 <p>Certain estimators will not be valid to bootstrap. This includes statistics
 like the maximum and minimum. resample solves this problem by building up
 estimators using Statistics objects.</p>
-<p>These objects match up to commonly found statistics and hold information
-on whether they are valid or not. More complicated estimators can be created by
-adding, subtracting, etc with other estimators and numeric values.</p>
+<p>These objects contain commonly statistics and hold information on whether
+they are valid or not. More complicated estimators can be created by
+adding, subtracting, etc. with other estimators and numeric values.</p>
 </div>
 </div>
 
@@ -94,6 +106,7 @@ adding, subtracting, etc with other estimators and numeric values.</p>
   <ul>
 <li><a class="reference internal" href="#">Advanced Tutorial</a><ul>
 <li><a class="reference internal" href="#multivariate-bootstraps">Multivariate Bootstraps</a></li>
+<li><a class="reference internal" href="#user-defined-estimators">User-defined Estimators</a></li>
 <li><a class="reference internal" href="#statistics-objects">Statistics Objects</a></li>
 </ul>
 </li>

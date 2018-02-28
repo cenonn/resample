@@ -1,11 +1,14 @@
+.. _advanced: 
+
 Advanced Tutorial
 ===================================
-resample provides two other features when performing bootstraps, multivariate
-bootstraps and validity checks through Statistics objects. 
+resample provides other features when performing bootstraps, multivariate
+bootstraps, user-defined estimators, and validity checks through Statistics
+objects. 
 
 Multivariate Bootstraps
 -----------------------------------
-Performing multivariate bootstraps with resample simply imvolves passing a
+Performing multivariate bootstraps with resample simply involves passing a
 pandas dataframe with all the columns to bootstrap::
 
     multi_boostrap = rs.boot(data[["mec", "vec"]], np.mean)
@@ -16,7 +19,22 @@ methods now have a 'col' argument to specify which column to look at::
 
     multi_bootstrap.plot(col=1)
 
+.. plot::
 
+    import pandas as pd
+    import numpy as np
+    import resample as rs
+
+    data = pd.read_csv("score.csv")
+    bootstrap = rs.boot(data[["mec", "vec"]], np.var)
+    bootstrap.plot(col=1)
+
+User-defined Estimators
+-----------------------------------
+All of the previous examples utilize numpy functions as their estimators.
+Users can define their own functions to pass into boot(). This in conjunction
+with multivariate datasets can be extremely powerful. *insert example with
+regression*
 
 
 Statistics Objects
@@ -25,8 +43,8 @@ Certain estimators will not be valid to bootstrap. This includes statistics
 like the maximum and minimum. resample solves this problem by building up
 estimators using Statistics objects. 
 
-These objects match up to commonly found statistics and hold information 
-on whether they are valid or not. More complicated estimators can be created by
-adding, subtracting, etc with other estimators and numeric values. 
+These objects contain commonly statistics and hold information on whether
+they are valid or not. More complicated estimators can be created by
+adding, subtracting, etc. with other estimators and numeric values. 
 
 
