@@ -2,20 +2,19 @@
 
 Advanced Tutorial
 ===================================
-resample provides other features when performing bootstraps, multivariate
-bootstraps, user-defined estimators, and validity checks through Statistics
-objects. 
+resample provides other features when performing bootstraps: multivariate
+bootstraps and validity checks.
 
 Multivariate Bootstraps
 -----------------------------------
 Performing multivariate bootstraps with resample simply involves passing a
-pandas dataframe with all the columns to bootstrap::
+**pandas** dataframe with all the columns to bootstrap::
 
     multi_boostrap = rs.boot(data[["mec", "vec"]], np.mean)
 
 This will return a MultivariateResults object. These objects function the same
 way their univariate counterpart does; the only difference is that some of the
-methods now have a 'col' argument to specify which column to look at::
+methods now have a *col* argument to specify which column to look at::
 
     multi_bootstrap.plot(col=1)
 
@@ -28,14 +27,6 @@ methods now have a 'col' argument to specify which column to look at::
     data = pd.read_csv("score.csv")
     bootstrap = rs.boot(data[["mec", "vec"]], np.var)
     bootstrap.plot(col=1)
-
-User-defined Estimators
------------------------------------
-All of the previous examples utilize numpy functions as their estimators.
-Users can define their own functions to pass into boot(). This in conjunction
-with multivariate datasets can be extremely powerful. *insert example with
-regression*
-
 
 Statistics Objects
 -----------------------------------

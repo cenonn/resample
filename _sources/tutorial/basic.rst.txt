@@ -41,8 +41,8 @@ default. This returns a UnivariateResults object.
 
 A few things to note:
 
-#. The dataset needs to be either an np.array, pd.Series, or univariate
-   pd.DataFrame
+#. The dataset needs to be either a **numpy array, pandas Series, or 
+   univariate pandas DataFrame**.
 #. The function passed can be any function, user-defined or otherwise, as long
    as it returns a single value. User-defined functions will be looked at more
    indepth in the :doc:`Advanced Tutorial <advanced>`.
