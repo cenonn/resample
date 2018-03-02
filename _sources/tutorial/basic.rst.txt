@@ -29,30 +29,30 @@ mec vec alg ana sta
 
 boot()
 -----------------------------------
-The boot() function encompasses the actual bootstrap algorithm and is the
-fundamental piece of the package. In order to perform a univariate 
+The *boot* function encompasses the actual bootstrap algorithm and is the
+fundamental piece of the package. resample implements the standard,
+nonparametric version of the bootstrap. In order to perform a univariate 
 bootstrap, a dataset and the estimator to be calculated are passed
 into the function::
     
     bootstrap = rs.boot(data["mec"], np.var)
 
-The boot function will then perform 10,000 boostrap simulations by 
-default. This returns a UnivariateResults object.
+The *boot* function will then perform 10,000 boostrap simulations by 
+default. This returns a **UnivariateResults** object.
 
 A few things to note:
 
-#. The dataset needs to be either a **numpy array, pandas Series, or 
-   univariate pandas DataFrame**.
+#. The dataset needs to be either a **numpy array**, **pandas Series**, or 
+   **univariate pandas DataFrame**.
 #. The function passed can be any function, user-defined or otherwise, as long
-   as it returns a single value. User-defined functions will be looked at more
-   indepth in the :doc:`Advanced Tutorial <advanced>`.
+   as it returns a single value. 
 
-
-Results Objects
+UnivariateResults Objects
 -----------------------------------
 Results objects hold the results from all the boostrap simulations, the
 estimator that was calculated, and the sample statistic. The primary use of
-this object will usually be to calculate the standard error of our estimate::
+this object will usually be to calculate various properies about the estimate
+such as the standard error::
 
     bootstrap.se()
 

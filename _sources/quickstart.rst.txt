@@ -7,8 +7,9 @@ the original dataset. This package intends to implement some of these methods;
 the first of which is the bootstrap. 
 
 Bootstrapping is a statistical technique developed by Bradley Efron (1979) that
-creates measures of accuracy for almost any statistic. The purpose of resample
-is to simplify the process and check whether.
+creates measures of accuracy for almost any statistic. This becomes extremely
+useful when a simple formula for the particular sample statistic or
+distribution does not exist. 
 
 Installation with git
 ===================================
@@ -22,7 +23,7 @@ Go to the resample directory and enter::
     
     python setup.py install
 
-After the install is complete, place the following line in any pyhon
+After the install is complete, place the following line in any python
 environment to use resample::
 
     import resample as rs

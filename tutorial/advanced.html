@@ -57,18 +57,19 @@
             
   <div class="section" id="advanced-tutorial">
 <span id="advanced"></span><h1>Advanced Tutorial<a class="headerlink" href="#advanced-tutorial" title="Permalink to this headline">¶</a></h1>
-<p>resample provides other features when performing bootstraps: multivariate
-bootstraps and validity checks.</p>
+<p><strong>resample</strong> provides other features when performing bootstraps:
+multivariate bootstraps and validity checks.</p>
 <div class="section" id="multivariate-bootstraps">
 <h2>Multivariate Bootstraps<a class="headerlink" href="#multivariate-bootstraps" title="Permalink to this headline">¶</a></h2>
-<p>Performing multivariate bootstraps with resample simply involves passing a
-<strong>pandas</strong> dataframe with all the columns to bootstrap:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">multi_boostrap</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">boot</span><span class="p">(</span><span class="n">data</span><span class="p">[[</span><span class="s2">&quot;mec&quot;</span><span class="p">,</span> <span class="s2">&quot;vec&quot;</span><span class="p">]],</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">)</span>
+<p>Performing multivariate bootstraps with <strong>resample</strong> involves passing a
+<strong>pandas</strong> dataframe with all the columns to bootstrap into <em>boot</em>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">multi_bootstrap</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">boot</span><span class="p">(</span><span class="n">data</span><span class="p">[[</span><span class="s2">&quot;mec&quot;</span><span class="p">,</span> <span class="s2">&quot;vec&quot;</span><span class="p">]],</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>This will return a MultivariateResults object. These objects function the same
-way their univariate counterpart does; the only difference is that some of the
-methods now have a <em>col</em> argument to specify which column to look at:</p>
+<p>This will return a <strong>MultivariateResults</strong> object. These objects function
+the same way their univariate counterpart does; the only difference is
+that some of the methods now have a required <em>col</em> argument to specify
+which column to look at:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">multi_bootstrap</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -77,14 +78,32 @@ methods now have a <em>col</em> argument to specify which column to look at:</p>
 <img alt="../_images/advanced-1.png" src="../_images/advanced-1.png" />
 </div>
 </div>
-<div class="section" id="statistics-objects">
-<h2>Statistics Objects<a class="headerlink" href="#statistics-objects" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="validity-checks-using-statistics-objects">
+<h2>Validity Checks using Statistics Objects<a class="headerlink" href="#validity-checks-using-statistics-objects" title="Permalink to this headline">¶</a></h2>
 <p>Certain estimators will not be valid to bootstrap. This includes statistics
 like the maximum and minimum. resample solves this problem by building up
-estimators using Statistics objects.</p>
-<p>These objects contain commonly statistics and hold information on whether
-they are valid or not. More complicated estimators can be created by
-adding, subtracting, etc. with other estimators and numeric values.</p>
+estimators using <strong>Statistics</strong> objects.</p>
+<p>These objects contain common statistics and hold information on whether
+they are valid to bootstrap or not. More complicated estimators can be
+created by adding, subtracting, etc. with other estimators and numeric values.
+After being created, they need to be passed into the <em>boot</em> function
+inplace of a function.</p>
+<p>If someone wanted to look at the average of the mean and median, they would
+need to:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">estimator</span> <span class="o">=</span> <span class="p">(</span><span class="n">rs</span><span class="o">.</span><span class="n">Mean</span><span class="p">()</span> <span class="o">+</span> <span class="n">rs</span><span class="o">.</span><span class="n">Quantile</span><span class="p">(</span><span class="mf">0.5</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="n">bootstrap</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">boot</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;mec&quot;</span><span class="p">],</span> <span class="n">estimator</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This particular case uses a valid estimator, so resample will not give a
+warning.</p>
+<p>Using the max on the otherhand would cause resample to give a warning:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">estimator</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">Max</span><span class="p">()</span>
+<span class="n">bootstrap</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">boot</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;mec&quot;</span><span class="p">],</span> <span class="n">estimator</span><span class="p">)</span>
+<span class="c1"># this would raise a python warning</span>
+</pre></div>
+</div>
+<p>This feature can be completely bypassed if a user wants to proceed with the
+bootstap anyway.</p>
 </div>
 </div>
 
@@ -98,7 +117,7 @@ adding, subtracting, etc. with other estimators and numeric values.</p>
   <ul>
 <li><a class="reference internal" href="#">Advanced Tutorial</a><ul>
 <li><a class="reference internal" href="#multivariate-bootstraps">Multivariate Bootstraps</a></li>
-<li><a class="reference internal" href="#statistics-objects">Statistics Objects</a></li>
+<li><a class="reference internal" href="#validity-checks-using-statistics-objects">Validity Checks using Statistics Objects</a></li>
 </ul>
 </li>
 </ul>

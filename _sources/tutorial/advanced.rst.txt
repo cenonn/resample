@@ -2,19 +2,20 @@
 
 Advanced Tutorial
 ===================================
-resample provides other features when performing bootstraps: multivariate
-bootstraps and validity checks.
+**resample** provides other features when performing bootstraps:
+multivariate bootstraps and validity checks.
 
 Multivariate Bootstraps
 -----------------------------------
-Performing multivariate bootstraps with resample simply involves passing a
-**pandas** dataframe with all the columns to bootstrap::
+Performing multivariate bootstraps with **resample** involves passing a
+**pandas** dataframe with all the columns to bootstrap into *boot*::
 
-    multi_boostrap = rs.boot(data[["mec", "vec"]], np.mean)
+    multi_bootstrap = rs.boot(data[["mec", "vec"]], np.var)
 
-This will return a MultivariateResults object. These objects function the same
-way their univariate counterpart does; the only difference is that some of the
-methods now have a *col* argument to specify which column to look at::
+This will return a **MultivariateResults** object. These objects function
+the same way their univariate counterpart does; the only difference is 
+that some of the methods now have a required *col* argument to specify 
+which column to look at::
 
     multi_bootstrap.plot(col=1)
 
@@ -28,14 +29,35 @@ methods now have a *col* argument to specify which column to look at::
     bootstrap = rs.boot(data[["mec", "vec"]], np.var)
     bootstrap.plot(col=1)
 
-Statistics Objects
------------------------------------
+Validity Checks using Statistics Objects
+----------------------------------------
 Certain estimators will not be valid to bootstrap. This includes statistics
 like the maximum and minimum. resample solves this problem by building up
-estimators using Statistics objects. 
+estimators using **Statistics** objects. 
 
-These objects contain commonly statistics and hold information on whether
-they are valid or not. More complicated estimators can be created by
-adding, subtracting, etc. with other estimators and numeric values. 
+These objects contain common statistics and hold information on whether
+they are valid to bootstrap or not. More complicated estimators can be 
+created by adding, subtracting, etc. with other estimators and numeric values.
+After being created, they need to be passed into the *boot* function
+inplace of a function.
+
+If someone wanted to look at the average of the mean and median, they would
+need to::
+
+    estimator = (rs.Mean() + rs.Quantile(0.5)) / 2
+    bootstrap = rs.boot(data["mec"], estimator)
+
+This particular case uses a valid estimator, so resample will not give a
+warning. 
+
+Using the max on the otherhand would cause resample to give a warning::
+
+    estimator = rs.Max()
+    bootstrap = rs.boot(data["mec"], estimator)
+    # this would raise a python warning
+
+This feature can be completely bypassed if a user wants to proceed with the
+bootstap anyway.
+
 
 
