@@ -9,22 +9,23 @@ the first of which is the bootstrap.
 Bootstrapping is a statistical technique developed by Bradley Efron (1979) that
 creates measures of accuracy for almost any statistic. This becomes extremely
 useful when a simple formula for the particular sample statistic or
-distribution does not exist. 
+distribution does not exist. **resample** provides a simply way of performing
+these simulations.
 
 Installation with git
 ===================================
-resample is designed to be used alongside `Anaconda
+**resample** is designed to be used alongside `Anaconda
 <http://continuum.io/downloads>`_ but has to be installed seperately. Download
-the git repository using the following command::
+the git repository using the following unix command::
     
     git clone https://github.com/cenonn/resample.git
 
-Go to the resample directory and enter::
+Go to the **resample** directory and enter::
     
     python setup.py install
 
 After the install is complete, place the following line in any python
-environment to use resample::
+environment to use **resample**::
 
     import resample as rs
 
