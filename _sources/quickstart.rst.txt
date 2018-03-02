@@ -1,6 +1,6 @@
 .. _quickstart:
 
-Getting Started
+Getting Started - What is reample
 -----------------------------------
 Resampling in statistics refers to any method that draws repeated samples from
 the original dataset. This package intends to implement some of these methods;

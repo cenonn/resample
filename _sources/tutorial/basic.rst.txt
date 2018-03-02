@@ -3,8 +3,9 @@
 Basic Tutorial
 ===================================
 Throughout this tutorial, we will be using the score dataset from Mardia, Kent,
-and Bibby (1979) on 88 students who took examinations in five subjects. This is a
-dataset that Efron has used in his book, *An Introduction to the Bootstrap*::
+and Bibby (1979) on 88 students who took examinations in five subjects. It is
+available to download :download:`here <score.csv>`. This is a dataset that 
+Efron has used in his book, *An Introduction to the Bootstrap*::
 
     import numpy as np
     import pandas as pd
@@ -44,7 +45,7 @@ A few things to note:
    pd.DataFrame
 #. The function passed can be any function, user-defined or otherwise, as long
    as it returns a single value. User-defined functions will be looked at more
-   indepth in the Advanced Tutorial.
+   indepth in the :doc:`Advanced Tutorial <advanced>`.
 
 
 Results Objects
