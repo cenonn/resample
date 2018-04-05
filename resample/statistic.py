@@ -75,7 +75,7 @@ class Mean(Statistic):
 
 
 class Quantile(Statistic):
-    """Defines valid Statistic object with a quantile function.
+    """Defines Statistic object either the median or quantile.
 
         :param q: quantile to be calculated
         :type q: float
@@ -87,6 +87,11 @@ class Quantile(Statistic):
             super().__init__(np.median, True)
         else:
             super().__init__(lambda x: np.percentile(x, q * 100), False)
+
+
+class Median(Quantile):
+    def __init__(self):
+        super().__init__(0.5)
 
 
 class SD(Statistic):
