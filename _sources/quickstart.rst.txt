@@ -6,11 +6,10 @@ Resampling in statistics refers to any method that draws repeated samples from
 the original dataset. This package intends to implement some of these methods;
 the first of which is the bootstrap. 
 
-Bootstrapping is a statistical technique developed by Bradley Efron (1979) that
-creates measures of accuracy for almost any statistic. This becomes extremely
-useful when a simple formula for the particular sample statistic or
-distribution does not exist. **resample** provides a simply way of performing
-these simulations.
+Bootstrapping is a statistical technique developed by Bradley Efron (1979) for
+estimating the uncertainty of a statistic. This is extremely useful when no 
+simple closed-form formula for the standard error or the distribution does not 
+exist. **resample** provides a simply way of performing these simulations.
 
 Installation with git
 ===================================

@@ -1,11 +1,12 @@
 .. _basic:
 
++++++++++++++++++++++++++++++++++++
 Basic Tutorial
-===================================
++++++++++++++++++++++++++++++++++++
 Throughout this tutorial, we will be using the score dataset from Mardia, Kent,
 and Bibby (1979) on 88 students who took examinations in five subjects. It is
 available to download :download:`here <score.csv>`. This is a dataset that 
-Efron has used in his book, *An Introduction to the Bootstrap*::
+Efron has used in his book, *An Introduction to the Bootstrap* ::
 
     import numpy as np
     import pandas as pd
@@ -26,37 +27,37 @@ mec vec alg ana sta
 63  63  65  70  63
 === === === === ===
 
-
 boot()
------------------------------------
-The *boot* function encompasses the actual bootstrap algorithm and is the
-fundamental piece of the package. resample implements the standard,
+===================================
+The ``boot`` function encompasses the actual bootstrap algorithm and is the
+fundamental piece of the package. **resample** implements the standard,
 nonparametric version of the bootstrap. In order to perform a univariate 
 bootstrap, a dataset and the estimator to be calculated are passed
-into the function::
+into the function ::
     
     bootstrap = rs.boot(data["mec"], np.var)
 
-The *boot* function will then perform 10,000 boostrap simulations by 
-default. This returns a **UnivariateResults** object.
+The ``boot`` function will then perform 10,000 boostrap simulations by 
+default.  
 
 A few things to note:
 
-#. The dataset needs to be either a **numpy array**, **pandas Series**, or 
-   **univariate pandas DataFrame**.
-#. The function passed can be any function, user-defined or otherwise, as long
-   as it returns a single value. 
+#. In a univariate scenario, the dataset passed into ``boot()`` needs to be
+   either a ``np.array``, ``pd.Series``, or univariate ``pd.DataFrame``. 
+#. The function passed can be any function, user-defined or otherwise. In the
+   simple scenario above where we only have data in one dimension, it makes
+   sense for this function to return one numeric value.
 
-UnivariateResults Objects
------------------------------------
+Results Objects
+===================================
 Results objects hold the results from all the boostrap simulations, the
 estimator that was calculated, and the sample statistic. The primary use of
-this object will usually be to calculate various properies about the estimate
-such as the standard error::
+this object will usually be to calculate various properties about the estimate
+such as the standard error ::
 
     bootstrap.se()
 
-It can also be used to plot a histogram of the bootstrap distribution::
+It can also be used to plot a histogram of the bootstrap distribution ::
 
     bootstrap.plot()
 
@@ -70,7 +71,30 @@ It can also be used to plot a histogram of the bootstrap distribution::
     bootstrap = rs.boot(data["mec"], np.var)
     bootstrap.plot()
 
-These objects have more functionality beyond these two examples. See the 
+One of the most important reasons to perform a bootstrap is to calculate an
+actual estimate. Because the results are a distribution, the user needs decide
+what would be an appropriate choice of center to use as a point estimate. The
+mean and median are common choices for this ::
+
+    bootstrap.point_estimate(np.mean)
+    bootstrap.point_estimate(np.median)
+
+Another advantage of using the bootstrap for estimation is that the calculation
+of the bias of an estimator become trivial. With **resample**, the user can
+either look at bias directly or apply a bias correction to their estimate ::
+    
+    bootstrap.bias()
+    bootstrap.point_estimate(np.mean, correction=True)
+
+Often, an interval estimate is better than a point estimate. Many different
+bootstrap confidence intervals exist; **resample** allows the user to calculate
+efron, percentile, or BCa intervals be specifying the ``kind`` argument ::
+
+    bootstrap.ci(kind="efron")
+    bootstrap.ci(kind="scale_percentile")
+    bootstrap.ci(kind="BCa")
+
+These objects have more functionality beyond what's shown above. See the 
 :doc:`modules <../refs/modules>` for more information.
 
 

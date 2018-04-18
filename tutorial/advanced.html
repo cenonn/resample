@@ -61,49 +61,102 @@
 multivariate bootstraps and validity checks.</p>
 <div class="section" id="multivariate-bootstraps">
 <h2>Multivariate Bootstraps<a class="headerlink" href="#multivariate-bootstraps" title="Permalink to this headline">¶</a></h2>
-<p>Performing multivariate bootstraps with <strong>resample</strong> involves passing a
-<strong>pandas</strong> dataframe with all the columns to bootstrap into <em>boot</em>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">multi_bootstrap</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">boot</span><span class="p">(</span><span class="n">data</span><span class="p">[[</span><span class="s2">&quot;mec&quot;</span><span class="p">,</span> <span class="s2">&quot;vec&quot;</span><span class="p">]],</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">)</span>
+<p><strong>resample</strong> allows many different kinds of multivariate bootstraps. The one
+thing that they all have in common is that the dataset needs to be passed into
+<code class="docutils literal"><span class="pre">boot</span></code> as a <code class="docutils literal"><span class="pre">pd.DataFrame</span></code>.</p>
+<div class="section" id="think-of-title">
+<h3>THINK OF TITLE<a class="headerlink" href="#think-of-title" title="Permalink to this headline">¶</a></h3>
+<p>The simplest case would be to calculate a statistic that looks at how each variable
+is dependent on one another such as the covariance or correlation</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">multi_bootstrap</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">boot</span><span class="p">(</span><span class="n">data</span><span class="p">[[</span><span class="s2">&quot;mec&quot;</span><span class="p">,</span> <span class="s2">&quot;vec&quot;</span><span class="p">]],</span> <span class="n">np</span><span class="o">.</span><span class="n">cov</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>This will return a <strong>MultivariateResults</strong> object. These objects function
-the same way their univariate counterpart does; the only difference is
-that some of the methods now have a required <em>col</em> argument to specify
-which column to look at:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">multi_bootstrap</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<p>Performing the actual bootstrap is almost the same as the univariate case;
+the only difference is that the input data has multiple variables. The
+difference is that calculations are handling matrices rather than atomic
+values. For example, calculating a point estimate would now return a 2x2
+matrix rather than a single value</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">multi_bootstrap</span><span class="o">.</span><span class="n">point_estimate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The only time this changes is when plotting the bootstrap distribution or when
+calculating confidence intervals. In either of these two situations, the
+<code class="docutils literal"><span class="pre">col</span></code> and <code class="docutils literal"><span class="pre">row</span></code> arguments will need to be specified to denote which
+specific value to analyze</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">multi_bootstrap</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>(<a class="reference external" href="../tutorial/advanced-1.py">Source code</a>, <a class="reference external" href="../tutorial/advanced-1.png">png</a>, <a class="reference external" href="../tutorial/advanced-1.hires.png">hires.png</a>, <a class="reference external" href="../tutorial/advanced-1.pdf">pdf</a>)</p>
 <div class="figure">
 <img alt="../_images/advanced-1.png" src="../_images/advanced-1.png" />
 </div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">multi_bootstrap</span><span class="o">.</span><span class="n">ci</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="mi">0</span> <span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="grouping-variables">
+<h3>Grouping Variables<a class="headerlink" href="#grouping-variables" title="Permalink to this headline">¶</a></h3>
+<p><strong>resample</strong> also allows the user to calculate statistics that compare
+different groups. For example, a user may want to look at the difference in
+means between two groups</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">diff_mean</span><span class="p">(</span><span class="n">group1</span><span class="p">,</span> <span class="n">group2</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">group1</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">group2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">boot</span></code> function handles this by specifying the <code class="docutils literal"><span class="pre">group_cols</span></code> argument; a
+<code class="docutils literal"><span class="pre">list</span></code> with the column names that specify the different groups should be
+passed</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># TODO: FIND ANOTHER DATASET</span>
+<span class="n">boot_groups</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">boot</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">diff_mean</span><span class="p">,</span> <span class="n">group_cols</span><span class="o">=</span><span class="p">[])</span>
+</pre></div>
+</div>
+<p>Specifying <code class="docutils literal"><span class="pre">group_col</span></code> will return the same type of object as before; the
+functionality remains the same.</p>
+</div>
+<div class="section" id="output-variables">
+<h3>Output Variables<a class="headerlink" href="#output-variables" title="Permalink to this headline">¶</a></h3>
+<p>A user can also use <strong>resample</strong> to bootstrap situations that have dependent
+variables and many independent variables such as estimating  regression
+coefficients. This is handled by specifying the <code class="docutils literal"><span class="pre">output_cols</span></code> argument</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># TODO: FIND ANOTHER DATASET</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">LinearRegression</span>
+
+<span class="k">def</span> <span class="nf">get_coefs</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">coef_</span>
+
+<span class="n">boot_reg</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">boot</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">get_coefs</span><span class="p">,</span> <span class="n">output_cols</span><span class="o">=</span><span class="p">[])</span>
+</pre></div>
+</div>
+</div>
 </div>
 <div class="section" id="validity-checks-using-statistics-objects">
 <h2>Validity Checks using Statistics Objects<a class="headerlink" href="#validity-checks-using-statistics-objects" title="Permalink to this headline">¶</a></h2>
 <p>Certain estimators will not be valid to bootstrap. This includes statistics
 like the maximum and minimum. resample solves this problem by building up
-estimators using <strong>Statistics</strong> objects.</p>
+estimators using Statistics objects.</p>
 <p>These objects contain common statistics and hold information on whether
 they are valid to bootstrap or not. More complicated estimators can be
 created by adding, subtracting, etc. with other estimators and numeric values.
 After being created, they need to be passed into the <em>boot</em> function
 inplace of a function.</p>
 <p>If someone wanted to look at the average of the mean and median, they would
-need to:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">estimator</span> <span class="o">=</span> <span class="p">(</span><span class="n">rs</span><span class="o">.</span><span class="n">Mean</span><span class="p">()</span> <span class="o">+</span> <span class="n">rs</span><span class="o">.</span><span class="n">Quantile</span><span class="p">(</span><span class="mf">0.5</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>
+need to</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">estimator</span> <span class="o">=</span> <span class="p">(</span><span class="n">rs</span><span class="o">.</span><span class="n">Mean</span><span class="p">()</span> <span class="o">+</span> <span class="n">rs</span><span class="o">.</span><span class="n">Median</span><span class="p">())</span> <span class="o">/</span> <span class="mi">2</span>
 <span class="n">bootstrap</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">boot</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;mec&quot;</span><span class="p">],</span> <span class="n">estimator</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>This particular case uses a valid estimator, so resample will not give a
 warning.</p>
-<p>Using the max on the otherhand would cause resample to give a warning:</p>
+<p>Using the max on the otherhand would cause resample to give a warning</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">estimator</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">Max</span><span class="p">()</span>
 <span class="n">bootstrap</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">boot</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;mec&quot;</span><span class="p">],</span> <span class="n">estimator</span><span class="p">)</span>
-<span class="c1"># this would raise a python warning</span>
+<span class="c1"># would raise a python Warning: &quot;results from bootstrap may not be valid</span>
 </pre></div>
 </div>
 <p>This feature can be completely bypassed if a user wants to proceed with the
-bootstap anyway.</p>
+bootstrap anyway.</p>
 </div>
 </div>
 
@@ -116,7 +169,12 @@ bootstap anyway.</p>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Advanced Tutorial</a><ul>
-<li><a class="reference internal" href="#multivariate-bootstraps">Multivariate Bootstraps</a></li>
+<li><a class="reference internal" href="#multivariate-bootstraps">Multivariate Bootstraps</a><ul>
+<li><a class="reference internal" href="#think-of-title">THINK OF TITLE</a></li>
+<li><a class="reference internal" href="#grouping-variables">Grouping Variables</a></li>
+<li><a class="reference internal" href="#output-variables">Output Variables</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#validity-checks-using-statistics-objects">Validity Checks using Statistics Objects</a></li>
 </ul>
 </li>

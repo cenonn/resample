@@ -57,7 +57,7 @@
 <span id="resample-boot"></span><h2>resample.boot<a class="headerlink" href="#module-resample.boot" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="resample.boot.boot">
-<code class="descclassname">resample.boot.</code><code class="descname">boot</code><span class="sig-paren">(</span><em>data</em>, <em>statistic</em>, <em>r=10000</em><span class="sig-paren">)</span><a class="headerlink" href="#resample.boot.boot" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">resample.boot.</code><code class="descname">boot</code><span class="sig-paren">(</span><em>data</em>, <em>statistic</em>, <em>group_cols=None</em>, <em>output_cols=None</em>, <em>r=10000</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#resample.boot.boot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates UnivariateResult or MultivariateResult objects.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -66,14 +66,16 @@
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>data</strong> (<em>np.array</em><em>, </em><em>pd.Series</em><em>, </em><em>np.DataFrame</em>) &#8211; input data to be bootstrapped</li>
 <li><strong>statistic</strong> (<a class="reference internal" href="#resample.statistic.Statistic" title="resample.statistic.Statistic"><em>Statistic</em></a><em>, </em><em>function</em>) &#8211; statistic to be calculated</li>
-<li><strong>r</strong> &#8211; number of bootstrap replications</li>
+<li><strong>group_cols</strong> (<em>list</em>) &#8211; group columns for data, default is none</li>
+<li><strong>output_cols</strong> (<em>list</em>) &#8211; output columns for data, default is none</li>
+<li><strong>r</strong> (<em>int</em>) &#8211; number of bootstrap replications</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">results from the bootstrap simulation</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#resample.result.UnivariateResult" title="resample.result.UnivariateResult">UnivariateResult</a>, <a class="reference internal" href="#resample.result.MultivariateResult" title="resample.result.MultivariateResult">MultivariateResult</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#resample.result.Results" title="resample.result.Results">Results</a></p>
 </td>
 </tr>
 </tbody>
@@ -84,27 +86,30 @@
 <div class="section" id="module-resample.result">
 <span id="resample-result"></span><h2>resample.result<a class="headerlink" href="#module-resample.result" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="resample.result.MultivariateResult">
-<em class="property">class </em><code class="descclassname">resample.result.</code><code class="descname">MultivariateResult</code><span class="sig-paren">(</span><em>results</em>, <em>statistic</em>, <em>observed</em><span class="sig-paren">)</span><a class="headerlink" href="#resample.result.MultivariateResult" title="Permalink to this definition">¶</a></dt>
+<dt id="resample.result.Results">
+<em class="property">class </em><code class="descclassname">resample.result.</code><code class="descname">Results</code><span class="sig-paren">(</span><em>results</em>, <em>statistic</em>, <em>observed</em>, <em>data</em>, <em>group_cols=None</em>, <em>output_cols=None</em><span class="sig-paren">)</span><a class="headerlink" href="#resample.result.Results" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Defines an object for multivariate bootstraps</p>
+<p>Defines an object for bootstrap results</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>results</strong> (<em>np.array</em>) &#8211; array that contains the estimate                 for every bootstrap replication</li>
+<li><strong>results</strong> (<em>np.array</em>) &#8211; array that contains the estimate             for every bootstrap replication</li>
 <li><strong>statistic</strong> (<em>function</em>) &#8211; statistic to be calculated</li>
-<li><strong>observed</strong> (<em>np.array</em>) &#8211; the sample statistics from the original data</li>
+<li><strong>observed</strong> (<em>int</em><em>, </em><em>float</em><em>, </em><em>np.array</em>) &#8211; the sample statistic from the original data</li>
+<li><strong>data</strong> (<em>np.array</em><em>, </em><em>pd.Series</em><em>, </em><em>pd.DataFrame</em>) &#8211; the original data</li>
+<li><strong>group_cols</strong> (<em>list</em>) &#8211; group columns for data, default is none</li>
+<li><strong>output_cols</strong> (<em>list</em>) &#8211; output columns for data, default is none</li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
-<dt id="resample.result.MultivariateResult.bias">
-<code class="descname">bias</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#resample.result.MultivariateResult.bias" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bootstrap estimate of bias for all variables</p>
+<dt id="resample.result.Results.bias">
+<code class="descname">bias</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#resample.result.Results.bias" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bootstrap estimate of bias</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -118,17 +123,18 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="resample.result.MultivariateResult.ci">
-<code class="descname">ci</code><span class="sig-paren">(</span><em>col</em>, <em>confidence=0.95</em>, <em>kind='efron'</em><span class="sig-paren">)</span><a class="headerlink" href="#resample.result.MultivariateResult.ci" title="Permalink to this definition">¶</a></dt>
+<dt id="resample.result.Results.ci">
+<code class="descname">ci</code><span class="sig-paren">(</span><em>col=None</em>, <em>row=None</em>, <em>confidence=0.95</em>, <em>kind='efron'</em><span class="sig-paren">)</span><a class="headerlink" href="#resample.result.Results.ci" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate an interval estimate of the statistic</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>col</strong> (<em>int</em>) &#8211; index of the variable</li>
-<li><strong>confidence</strong> (<em>float</em>) &#8211; the confidence level of the estimate,                 between 0.0 and 1.0e con</li>
-<li><strong>kind</strong> (<em>string</em>) &#8211; type of interval to calculate, either efron or                 percentile intervals</li>
+<li><strong>col</strong> (<em>int</em>) &#8211; column to plot</li>
+<li><strong>row</strong> (<em>int</em>) &#8211; row to plot</li>
+<li><strong>confidence</strong> (<em>float</em>) &#8211; the confidence level of the estimate,                 between 0.0 and 1.0</li>
+<li><strong>kind</strong> (<em>string</em>) &#8211; type of interval to calculate, either efron,                 BCa, location percentile, or scale percentile</li>
 </ul>
 </td>
 </tr>
@@ -143,8 +149,8 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="resample.result.MultivariateResult.plot">
-<code class="descname">plot</code><span class="sig-paren">(</span><em>col</em>, <em>bins=30</em><span class="sig-paren">)</span><a class="headerlink" href="#resample.result.MultivariateResult.plot" title="Permalink to this definition">¶</a></dt>
+<dt id="resample.result.Results.plot">
+<code class="descname">plot</code><span class="sig-paren">(</span><em>col=None</em>, <em>row=None</em>, <em>bins=30</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#resample.result.Results.plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a histogram of the bootstrap distribution</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -161,122 +167,8 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="resample.result.MultivariateResult.point_estimate">
-<code class="descname">point_estimate</code><span class="sig-paren">(</span><em>center</em>, <em>correction=False</em><span class="sig-paren">)</span><a class="headerlink" href="#resample.result.MultivariateResult.point_estimate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Point estimate from the bootstrap distribution</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>center</strong> (<em>function</em>) &#8211; measure of center to use</li>
-<li><strong>correction</strong> (<em>boolean</em>) &#8211; if True, apply bias correction</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">numerical estimate of center</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">np.array</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="resample.result.MultivariateResult.se">
-<code class="descname">se</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#resample.result.MultivariateResult.se" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bootstrap estimate of standard error for all variables</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">standard error</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="resample.result.UnivariateResult">
-<em class="property">class </em><code class="descclassname">resample.result.</code><code class="descname">UnivariateResult</code><span class="sig-paren">(</span><em>results</em>, <em>statistic</em>, <em>observed</em><span class="sig-paren">)</span><a class="headerlink" href="#resample.result.UnivariateResult" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Defines an object for univariate bootstraps</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>results</strong> (<em>np.array</em>) &#8211; array that contains the estimate                 for every bootstrap replication</li>
-<li><strong>statistic</strong> (<em>function</em>) &#8211; statistic to be calculated</li>
-<li><strong>observed</strong> (<em>int</em><em>, </em><em>float</em>) &#8211; the sample statistic from the original data</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="method">
-<dt id="resample.result.UnivariateResult.bias">
-<code class="descname">bias</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#resample.result.UnivariateResult.bias" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bootstrap estimate of bias</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">bias</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="resample.result.UnivariateResult.ci">
-<code class="descname">ci</code><span class="sig-paren">(</span><em>confidence=0.95</em>, <em>kind='efron'</em><span class="sig-paren">)</span><a class="headerlink" href="#resample.result.UnivariateResult.ci" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate an interval estimate of the statistic</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>confidence</strong> (<em>float</em>) &#8211; the confidence level of the estimate,                 between 0.0 and 1.0e con</li>
-<li><strong>kind</strong> (<em>string</em>) &#8211; type of interval to calculate, either efron or                 percentile intervals</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the confidence interval</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">tuple</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="resample.result.UnivariateResult.plot">
-<code class="descname">plot</code><span class="sig-paren">(</span><em>bins=30</em><span class="sig-paren">)</span><a class="headerlink" href="#resample.result.UnivariateResult.plot" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a histogram of the bootstrap distribution</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bins</strong> (<em>int</em>) &#8211; number of bins for the histogram</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="resample.result.UnivariateResult.point_estimate">
-<code class="descname">point_estimate</code><span class="sig-paren">(</span><em>center</em>, <em>correction=False</em><span class="sig-paren">)</span><a class="headerlink" href="#resample.result.UnivariateResult.point_estimate" title="Permalink to this definition">¶</a></dt>
+<dt id="resample.result.Results.point_estimate">
+<code class="descname">point_estimate</code><span class="sig-paren">(</span><em>center</em>, <em>correction=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#resample.result.Results.point_estimate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Point estimate from the bootstrap distribution</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -299,8 +191,8 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="resample.result.UnivariateResult.se">
-<code class="descname">se</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#resample.result.UnivariateResult.se" title="Permalink to this definition">¶</a></dt>
+<dt id="resample.result.Results.se">
+<code class="descname">se</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#resample.result.Results.se" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bootstrap estimate of standard error</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -347,6 +239,12 @@
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="class">
+<dt id="resample.statistic.Median">
+<em class="property">class </em><code class="descclassname">resample.statistic.</code><code class="descname">Median</code><a class="headerlink" href="#resample.statistic.Median" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#resample.statistic.Quantile" title="resample.statistic.Quantile"><code class="xref py py-class docutils literal"><span class="pre">resample.statistic.Quantile</span></code></a></p>
 </dd></dl>
 
 <dl class="class">
