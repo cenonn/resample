@@ -3,9 +3,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 from scipy.stats import norm
+from .utility import *
 
-# convert to just one overarching Result object
-# have the functions below just return what ever is outputted by the estimator
 
 class Results:
     """Defines an object for bootstrap results
@@ -58,7 +57,7 @@ class Results:
             :type center: function
             :type correction: boolean
             :return: numberical estimate of center
-            :rtype: float, int
+            :rtype: np.array
 
         """
         center_func = lambda x: center(x, **kwargs)
@@ -108,9 +107,11 @@ class Results:
         elif col is not None and row is None:
             res = self.results[:, col]
             obs = self.observed[col]
-        else:
+        elif col is not None and row is not None:
             res = self.results[:, row, col]
             obs = self.observed[row, col]
+        else:
+            raise Exception("provide at least column to plot")
 
         quantile = 100*(1 - confidence)/2
         L, U = np.percentile(res, quantile), np.percentile(res, 100 - quantile)
@@ -124,24 +125,21 @@ class Results:
         elif kind == 'BCa':
             # calculate bias-correction
             count = sum(res < obs)
-            # may need to add adjustment to prevent norm.ppf(0) or norm.ppf(1) at small r
             z_hat_nought = norm.ppf(count / len(res))
+            if np.isinf(z_hat_nought):
+                raise Exception("bias-correction is inf. try raising value of r")
 
             # calculate acceleration
             if isinstance(data, pd.DataFrame):
                 theta_i = []
+                #perform jackknife
                 for i, _ in data.iterrows():
                     current_iter = data.drop(i)
                     if self.group_cols is None:
                         if self.output_cols is None:
                             theta_i.append(self.statistic(current_iter))
                         else:
-                            X = current_iter[current_iter.columns.difference(self.output_cols)]
-                            if len(self.output_cols) == 1:
-                                y = current_iter[self.output_cols[0]]
-                            else:
-                                y = current_iter[self.output_cols]
-
+                            X, y = output_res(current_iter, self.output_cols)
                             if col is None and row is None:
                                 current_res = self.statistic(X, y)
                             elif col is not None and row is None:
@@ -150,11 +148,7 @@ class Results:
                                 current_res = self.statistic(X, y)[row, col]
                             theta_i.append(current_res)
                     else:
-                        indices = current_iter.reset_index().groupby(self.group_cols)["index"].apply(list).to_dict()
-                        grouped_data = {}
-                        for key, val in indices.items():
-                            grouped_data[key] = current_iter.loc[val][current_iter.loc[val].columns.difference(self.group_cols)]
-                        current_res = self.statistic(*list(grouped_data.values()))
+                        current_res, _ = group_res(current_iter, self.group_cols, self.statistic)
                         theta_i.append(current_res)
             else:
                 index_range = np.arange(0, len(data))
@@ -167,12 +161,8 @@ class Results:
             a_hat = a_hat_num / a_hat_den
 
             # calculate the endpoints
-            a1_num = z_hat_nought + norm.ppf(1 - confidence)
-            a1_den = 1 - a_hat * (z_hat_nought + norm.ppf(1 - confidence))
-            a2_num = z_hat_nought + norm.ppf(confidence)
-            a2_den = 1 - a_hat * (z_hat_nought + norm.ppf(confidence))
-            a1 = 100 * norm.cdf(z_hat_nought + (a1_num / a1_den))
-            a2 = 100 * norm.cdf(z_hat_nought + (a2_num / a2_den))
+            a1 = bca_endpoints(z_hat_nought, a_hat, 1 - confidence)
+            a2 = bca_endpoints(z_hat_nought, a_hat, confidence)
             return np.percentile(res, a1), np.percentile(res, a2)
         else:
             raise Exception("unsupported ci type")

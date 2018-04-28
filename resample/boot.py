@@ -3,6 +3,7 @@ import pandas as pd
 
 from .result import Results
 from .statistic import Statistic
+from .utility import *
 
 
 def boot(data, statistic, group_cols=None, output_cols=None, r=10000, **kwargs):
@@ -13,7 +14,7 @@ def boot(data, statistic, group_cols=None, output_cols=None, r=10000, **kwargs):
         :param group_cols: group columns for data, default is none
         :param output_cols: output columns for data, default is none
         :param r: number of bootstrap replications
-        :type data: np.array, pd.Series, np.DataFrame
+        :type data: np.array, pd.Series, pd.DataFrame
         :type statistic: Statistic, function
         :type group_cols: list
         :type output_cols: list
@@ -22,6 +23,8 @@ def boot(data, statistic, group_cols=None, output_cols=None, r=10000, **kwargs):
         :rtype: Results
 
     """
+
+    #extract func and apply kwargs
     if isinstance(statistic, Statistic):
         func = lambda *args: statistic.func(*args, **kwargs)
         if not statistic.is_valid:
@@ -54,34 +57,26 @@ def boot(data, statistic, group_cols=None, output_cols=None, r=10000, **kwargs):
             return Results(results, func, func(data), data)
         else:
             if group_cols is None:
+                #perform bootstrap
                 for _ in range(r):
                     # frac=1 to return sample of same size
                     boot_sample = data.sample(frac=1, replace=True)
                     if output_cols is None:
                         results.append(func(boot_sample))
                     else:
-                        X = boot_sample[list(boot_sample.columns.difference(output_cols))]
-                        if len(output_cols) == 1:
-                            y = boot_sample[output_cols[0]]
-                        else:
-                            y = boot_sample[output_cols]
+                        X, y = output_res(boot_sample, output_cols)
                         current_res = func(X, y)
                         results.append(current_res)
+
+                #get observed
                 if output_cols is None:
                     return Results(results, func, func(data), data)
                 else:
-                    X = data[data.columns.difference(output_cols)]
-                    if len(output_cols) == 1:
-                        y = boot_sample[output_cols[0]]
-                    else:
-                        y = boot_sample[output_cols]
+                    X, y = output_res(data, output_cols)
                     return Results(results, func, func(X, y), data, output_cols=output_cols)
             else:
-                indices = data.reset_index().groupby(group_cols)["index"].apply(list).to_dict()
-                grouped_data = {}
-                for key, val in indices.items():
-                    grouped_data[key] = data.loc[val][data.loc[val].columns.difference(group_cols)]
-                observed = np.asarray(func(*list(grouped_data.values())))
+                observed, grouped_data = group_res(data, group_cols, func)
+                observed = np.asarray(observed)
                 for _ in range(r):
                     current_iter = []
                     for _, val in grouped_data.items():
