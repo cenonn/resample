@@ -57,18 +57,11 @@
             
   <div class="section" id="basic-tutorial">
 <span id="basic"></span><h1>Basic Tutorial<a class="headerlink" href="#basic-tutorial" title="Permalink to this headline">¶</a></h1>
-<p>Throughout this tutorial, we will be using the score dataset from Mardia, Kent,
-and Bibby (1979) on 88 students who took examinations in five subjects. It is
-available to download <a class="reference download internal" href="../_downloads/score.csv" download=""><code class="xref download docutils literal"><span class="pre">here</span></code></a>. This is a dataset that
-Efron has used in his book, <em>An Introduction to the Bootstrap</em></p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">resample</span> <span class="k">as</span> <span class="nn">rs</span>
-
-<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;score.csv&quot;</span><span class="p">)</span>
-<span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-</pre></div>
-</div>
+<p>Throughout this tutorial, we will be using two datasets from Efron&#8217;s book,
+<em>An Introduction to the Bootstrap</em>. The first dataset, from Mardia, Kent, and
+Biddy (1979), contains information  on 88 students who took examinations in
+five subjects. It is avavilable to download <a class="reference download internal" href="../_downloads/score.csv" download=""><code class="xref download docutils literal"><span class="pre">here</span></code></a>. The
+first five rows are below:</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="20%" />
@@ -118,14 +111,56 @@ Efron has used in his book, <em>An Introduction to the Bootstrap</em></p>
 </tr>
 </tbody>
 </table>
+<p>The second dataset contains information about the amount of an anti-inflammatory
+hormone (mg) in 27 devices. It is available to download <a class="reference download internal" href="../_downloads/hormone.csv" download=""><code class="xref download docutils literal"><span class="pre">here</span></code></a>. The first five rows are below:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">lot</th>
+<th class="head">hrs</th>
+<th class="head">amount</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>A</td>
+<td>99</td>
+<td>25.8</td>
+</tr>
+<tr class="row-odd"><td>A</td>
+<td>152</td>
+<td>20.5</td>
+</tr>
+<tr class="row-even"><td>A</td>
+<td>293</td>
+<td>14.3</td>
+</tr>
+<tr class="row-odd"><td>A</td>
+<td>155</td>
+<td>23.2</td>
+</tr>
+<tr class="row-even"><td>A</td>
+<td>196</td>
+<td>20.6</td>
+</tr>
+</tbody>
+</table>
 <div class="section" id="boot">
 <h2>boot()<a class="headerlink" href="#boot" title="Permalink to this headline">¶</a></h2>
 <p>The <code class="docutils literal"><span class="pre">boot</span></code> function encompasses the actual bootstrap algorithm and is the
 fundamental piece of the package. <strong>resample</strong> implements the standard,
 nonparametric version of the bootstrap. In order to perform a univariate
 bootstrap, a dataset and the estimator to be calculated are passed
-into the function</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">bootstrap</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">boot</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;mec&quot;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">)</span>
+into the function. In the below example, below we want to get a bootstrap
+estimate of the variance of mechanics test scores</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">resample</span> <span class="k">as</span> <span class="nn">rs</span>
+
+<span class="n">bootstrap</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">boot</span><span class="p">(</span><span class="n">score</span><span class="p">[</span><span class="s2">&quot;mec&quot;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The <code class="docutils literal"><span class="pre">boot</span></code> function will then perform 10,000 boostrap simulations by

@@ -8,7 +8,7 @@
 Welcome to resample's documentation!
 ====================================
 
-**resample** is Python framework for performing resampling methods.
+**resample** is Python framework for performing bootstrap estimation.
 
 
 .. toctree::

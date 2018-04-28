@@ -3,17 +3,11 @@
 +++++++++++++++++++++++++++++++++++
 Basic Tutorial
 +++++++++++++++++++++++++++++++++++
-Throughout this tutorial, we will be using the score dataset from Mardia, Kent,
-and Bibby (1979) on 88 students who took examinations in five subjects. It is
-available to download :download:`here <score.csv>`. This is a dataset that 
-Efron has used in his book, *An Introduction to the Bootstrap* ::
-
-    import numpy as np
-    import pandas as pd
-    import resample as rs
-
-    data = pd.read_csv("score.csv")
-    data.head()
+Throughout this tutorial, we will be using two datasets from Efron's book,
+*An Introduction to the Bootstrap*. The first dataset, from Mardia, Kent, and
+Biddy (1979), contains information  on 88 students who took examinations in 
+five subjects. It is avavilable to download :download:`here <score.csv>`. The 
+first five rows are below: 
 
 === === === === ===
  
@@ -27,15 +21,37 @@ mec vec alg ana sta
 63  63  65  70  63
 === === === === ===
 
+The second dataset contains information about the amount of an anti-inflammatory
+hormone (mg) in 27 devices. It is available to download :download:`here
+<hormone.csv>`. The first five rows are below:
+
+====== ====== ======
+
+ lot    hrs   amount
+
+====== ====== ======
+A      99     25.8
+A      152    20.5
+A      293    14.3
+A      155    23.2
+A      196    20.6
+====== ====== ======
+
+
 boot()
 ===================================
 The ``boot`` function encompasses the actual bootstrap algorithm and is the
 fundamental piece of the package. **resample** implements the standard,
 nonparametric version of the bootstrap. In order to perform a univariate 
 bootstrap, a dataset and the estimator to be calculated are passed
-into the function ::
+into the function. In the below example, below we want to get a bootstrap
+estimate of the variance of mechanics test scores ::
+
+    import numpy as np
+    import pandas as pd
+    import resample as rs
     
-    bootstrap = rs.boot(data["mec"], np.var)
+    bootstrap = rs.boot(score["mec"], np.var)
 
 The ``boot`` function will then perform 10,000 boostrap simulations by 
 default.  

@@ -58,28 +58,28 @@
   <div class="section" id="advanced-tutorial">
 <span id="advanced"></span><h1>Advanced Tutorial<a class="headerlink" href="#advanced-tutorial" title="Permalink to this headline">¶</a></h1>
 <p><strong>resample</strong> provides other features when performing bootstraps:
-multivariate bootstraps and validity checks.</p>
-<div class="section" id="multivariate-bootstraps">
-<h2>Multivariate Bootstraps<a class="headerlink" href="#multivariate-bootstraps" title="Permalink to this headline">¶</a></h2>
-<p><strong>resample</strong> allows many different kinds of multivariate bootstraps. The one
+handling multivariate data and validity checks.</p>
+<div class="section" id="multivariate-data">
+<h2>Multivariate Data<a class="headerlink" href="#multivariate-data" title="Permalink to this headline">¶</a></h2>
+<p><strong>resample</strong> allows many different kinds of multivariate data. The one
 thing that they all have in common is that the dataset needs to be passed into
 <code class="docutils literal"><span class="pre">boot</span></code> as a <code class="docutils literal"><span class="pre">pd.DataFrame</span></code>.</p>
 <div class="section" id="think-of-title">
 <h3>THINK OF TITLE<a class="headerlink" href="#think-of-title" title="Permalink to this headline">¶</a></h3>
-<p>The simplest case would be to calculate a statistic that looks at how each variable
-is dependent on one another such as the covariance or correlation</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">multi_bootstrap</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">boot</span><span class="p">(</span><span class="n">data</span><span class="p">[[</span><span class="s2">&quot;mec&quot;</span><span class="p">,</span> <span class="s2">&quot;vec&quot;</span><span class="p">]],</span> <span class="n">np</span><span class="o">.</span><span class="n">cov</span><span class="p">)</span>
+<p>The simplest case would be to calculate a statistic that looks at how each
+variable is dependent on one another such as the covariance or correlation</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">multi_bootstrap</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">boot</span><span class="p">(</span><span class="n">score</span><span class="p">[[</span><span class="s2">&quot;mec&quot;</span><span class="p">,</span> <span class="s2">&quot;vec&quot;</span><span class="p">]],</span> <span class="n">np</span><span class="o">.</span><span class="n">cov</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Performing the actual bootstrap is almost the same as the univariate case;
-the only difference is that the input data has multiple variables. The
-difference is that calculations are handling matrices rather than atomic
-values. For example, calculating a point estimate would now return a 2x2
-matrix rather than a single value</p>
+<p>Performing the actual bootstrap is almost the same as the univariate case.
+The only difference is that the input data has multiple variables, thus
+the calculations are handling matrices rather than atomic values. For example,
+calculating a point estimate would now return a 2x2 matrix rather than a single
+value</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">multi_bootstrap</span><span class="o">.</span><span class="n">point_estimate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The only time this changes is when plotting the bootstrap distribution or when
+<p>The only times this changes is when plotting the bootstrap distribution or when
 calculating confidence intervals. In either of these two situations, the
 <code class="docutils literal"><span class="pre">col</span></code> and <code class="docutils literal"><span class="pre">row</span></code> arguments will need to be specified to denote which
 specific value to analyze</p>
@@ -105,9 +105,13 @@ means between two groups</p>
 </div>
 <p>The <code class="docutils literal"><span class="pre">boot</span></code> function handles this by specifying the <code class="docutils literal"><span class="pre">group_cols</span></code> argument; a
 <code class="docutils literal"><span class="pre">list</span></code> with the column names that specify the different groups should be
-passed</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># TODO: FIND ANOTHER DATASET</span>
-<span class="n">boot_groups</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">boot</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">diff_mean</span><span class="p">,</span> <span class="n">group_cols</span><span class="o">=</span><span class="p">[])</span>
+passed. In the example below, we want to get a bootstrap estimate of the
+difference beween the average algebra and statics scores. This will also
+require changing the structure of the score dataset to contain a column that
+specifies an observation&#8217;s group</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">group_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;alg&quot;</span><span class="p">,</span> <span class="s2">&quot;sta&quot;</span><span class="p">]</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">score</span><span class="p">[</span><span class="n">group_cols</span><span class="p">]</span><span class="o">.</span><span class="n">melt</span><span class="p">(</span><span class="n">value_vars</span><span class="o">=</span><span class="n">group_cols</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+<span class="n">boot_groups</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">boot</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">diff_mean</span><span class="p">,</span> <span class="n">group_cols</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;test&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
 <p>Specifying <code class="docutils literal"><span class="pre">group_col</span></code> will return the same type of object as before; the
@@ -115,18 +119,17 @@ functionality remains the same.</p>
 </div>
 <div class="section" id="output-variables">
 <h3>Output Variables<a class="headerlink" href="#output-variables" title="Permalink to this headline">¶</a></h3>
-<p>A user can also use <strong>resample</strong> to bootstrap situations that have dependent
-variables and many independent variables such as estimating  regression
-coefficients. This is handled by specifying the <code class="docutils literal"><span class="pre">output_cols</span></code> argument</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># TODO: FIND ANOTHER DATASET</span>
-<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">LinearRegression</span>
+<p>A user can also use <strong>resample</strong> to bootstrap situations that specify specific
+dependent and independent variables such as estimating regression
+coefficients</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">LinearRegression</span>
 
 <span class="k">def</span> <span class="nf">get_coefs</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
     <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">coef_</span>
 
-<span class="n">boot_reg</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">boot</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">get_coefs</span><span class="p">,</span> <span class="n">output_cols</span><span class="o">=</span><span class="p">[])</span>
+<span class="n">boot_reg</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">boot</span><span class="p">(</span><span class="n">hormone</span><span class="p">,</span> <span class="n">get_coefs</span><span class="p">,</span> <span class="n">output_cols</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;amount&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -169,7 +172,7 @@ bootstrap anyway.</p>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Advanced Tutorial</a><ul>
-<li><a class="reference internal" href="#multivariate-bootstraps">Multivariate Bootstraps</a><ul>
+<li><a class="reference internal" href="#multivariate-data">Multivariate Data</a><ul>
 <li><a class="reference internal" href="#think-of-title">THINK OF TITLE</a></li>
 <li><a class="reference internal" href="#grouping-variables">Grouping Variables</a></li>
 <li><a class="reference internal" href="#output-variables">Output Variables</a></li>
