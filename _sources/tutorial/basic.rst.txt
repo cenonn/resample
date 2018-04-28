@@ -110,8 +110,5 @@ efron, percentile, or BCa intervals be specifying the ``kind`` argument ::
     bootstrap.ci(kind="scale_percentile")
     bootstrap.ci(kind="BCa")
 
-These objects have more functionality beyond what's shown above. See the 
-:doc:`modules <../refs/modules>` for more information.
-
 
 

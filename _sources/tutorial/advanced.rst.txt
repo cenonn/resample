@@ -12,7 +12,7 @@ Multivariate Data
 thing that they all have in common is that the dataset needs to be passed into
 ``boot`` as a ``pd.DataFrame``.
 
-THINK OF TITLE
+Matrix Statistics
 -----------------------------------
 The simplest case would be to calculate a statistic that looks at how each 
 variable is dependent on one another such as the covariance or correlation :: 
@@ -32,7 +32,7 @@ calculating confidence intervals. In either of these two situations, the
 ``col`` and ``row`` arguments will need to be specified to denote which
 specific value to analyze ::
 
-    multi_bootstrap.plot(col=0, row=0)
+    multi_bootstrap.plot(col=0, row=1)
 
 .. plot::
 
@@ -42,7 +42,7 @@ specific value to analyze ::
 
     data = pd.read_csv("score.csv")
     bootstrap = rs.boot(data[["mec", "vec"]], np.cov)
-    bootstrap.plot(col=0, row=0)
+    bootstrap.plot(col=0, row=1)
 
 ::
     
@@ -60,7 +60,7 @@ means between two groups ::
 The ``boot`` function handles this by specifying the ``group_cols`` argument; a
 ``list`` with the column names that specify the different groups should be
 passed. In the example below, we want to get a bootstrap estimate of the
-difference beween the average algebra and statics scores. This will also
+difference beween the average algebra and statistics scores. This will also
 require changing the structure of the score dataset to contain a column that
 specifies an observation's group ::
 
@@ -86,6 +86,8 @@ coefficients ::
 
     boot_reg = rs.boot(hormone, get_coefs, output_cols=["amount"])
 
+Like all of the previous examples, this will return the same time of object as
+before.
 
 Validity Checks using Statistics Objects
 ========================================
