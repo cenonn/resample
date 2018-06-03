@@ -4,7 +4,9 @@
 Basic Tutorial
 +++++++++++++++++++++++++++++++++++
 Throughout this tutorial, we will be using two datasets from Efron's book,
-*An Introduction to the Bootstrap*. The first dataset, from Mardia, Kent, and
+*An Introduction to the Bootstrap*. 
+
+The first dataset, from Mardia, Kent, and
 Biddy (1979), contains information  on 88 students who took examinations in 
 five subjects. It is avavilable to download :download:`here <score.csv>`. The 
 first five rows are below: 
