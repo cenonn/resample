@@ -3,7 +3,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 from scipy.stats import norm
-from .utility import *
+from .utility import group_res, output_res, bca_endpoints, \
+                        plot_single
 
 
 class Results:
@@ -11,7 +12,7 @@ class Results:
 
         :param results: array that contains the estimate \
             for every bootstrap replication
-        :param statistic: statistic to be calculated
+        :param statistic: statistic that was calculated
         :param observed: the sample statistic from the original data
         :param data: the original data
         :param group_cols: group columns for data, default is none
@@ -23,7 +24,8 @@ class Results:
         :type group_cols: list
         :type output_cols: list
     """
-    def __init__(self, results, statistic, observed, data, group_cols=None, output_cols=None):
+    def __init__(self, results, statistic, observed, data, group_cols=None, \
+                                output_cols=None):
         self.results = np.array(results)
         self.statistic = statistic
         self.observed = observed
@@ -66,23 +68,49 @@ class Results:
         else:
             return np.apply_along_axis(center_func, 0, self.results) - self.bias()
 
-    # maybe change col behavior?
     def plot(self, col=None, row=None, bins=30, **kwargs):
         """Create a histogram of the bootstrap distribution
 
+            :param col: y index of the variable to plot
+            :param row: x index of the variable to plot (requires col)
             :param bins: number of bins for the histogram
-            :param col: index of the variable to plot
-            :type bins: int
             :type col: int
+            :type row: int
+            :type bins: int
         """
+        res_shape = len(self.shape)
         if col is None and row is None:
-            plt.hist(self.results, bins=bins, **kwargs)
+            if res_shape == 1:
+                plt.hist(self.results, bins=bins, **kwargs)
+            elif res_shape == 2:
+                num_plots = self.shape[1]
+                plot_single(self.results, num_plots, bins, **kwargs)
+
+            elif res_shape == 3:
+                x_plots = self.shape[1]
+                y_plots = self.shape[2]
+                fig, axes = plt.subplots(x_plots, y_plots, sharey=True)
+                axes_iter = np.nditer(axes, flags=["refs_ok"])
+
+                for x in range(x_plots):
+                    for y in range(y_plots):
+                        current_var = self.results[:, x, y]
+                        axes_iter[0].item(0).hist(current_var, \
+                                                    bins=bins, **kwargs)
+                        axes_iter.iternext()
+
         elif col is not None and row is None:
-            plt.hist(self.results[:, col], bins=bins, **kwargs)
+            if res_shape == 2:
+                plt.hist(self.results[:, col], bins=bins, **kwargs)
+            elif res_shape == 3:
+                col_vals = self.results[:, :, col]
+                num_plots = col_vals.shape[1]
+                plot_single(col_vals, num_plots, bins, **kwargs)
+
+        elif col is None and row is not None:
+            raise Exception("provide column to plot")
         elif col is not None and row is not None:
             plt.hist(self.results[:, row, col], bins=bins, **kwargs)
-        else:
-            raise Exception("provide at least column to plot")
 
     def ci(self, col=None, row=None, confidence=0.95, kind='efron'):
         """Calculate an interval estimate of the statistic
@@ -148,7 +176,8 @@ class Results:
                                 current_res = self.statistic(X, y)[row, col]
                             theta_i.append(current_res)
                     else:
-                        current_res, _ = group_res(current_iter, self.group_cols, self.statistic)
+                        current_res, _ = group_res(current_iter,\
+                                            self.group_cols, self.statistic)
                         theta_i.append(current_res)
             else:
                 index_range = np.arange(0, len(data))

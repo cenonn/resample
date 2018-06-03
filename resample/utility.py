@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 from scipy.stats import norm
 
@@ -63,3 +64,21 @@ def bca_endpoints(z_hat_nought, a_hat, conf):
     den = 1 - a_hat * (z_hat_nought + norm.ppf(conf))
     a = 100 * norm.cdf(z_hat_nought + (num / den))
     return a
+
+def plot_single(data, num_plots, bins, **kwargs):
+    """Create row of plots
+        
+        :param data: values to plot
+        :param num_plots: number of plots
+        :param bins: number of bins for the histogram
+        :type data: np.array
+        :type num_plots: int
+        :type bins: int
+
+    """
+    fig, axes = plt.subplots(num_plots, sharey=True)
+
+    for ax, i in zip(axes, range(0, num_plots)):
+        current_var = data[:,i]
+        ax.hist(current_var, bins=bins, **kwargs)
+    

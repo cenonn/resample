@@ -3,7 +3,7 @@ import pandas as pd
 
 from .result import Results
 from .statistic import Statistic
-from .utility import *
+from .utility import group_res, output_res
 
 
 def boot(data, statistic, group_cols=None, output_cols=None, r=10000, **kwargs):
@@ -24,7 +24,7 @@ def boot(data, statistic, group_cols=None, output_cols=None, r=10000, **kwargs):
 
     """
 
-    #extract func and apply kwargs
+    #extract func from either Statistic object or function and apply kwargs
     if isinstance(statistic, Statistic):
         func = lambda *args: statistic.func(*args, **kwargs)
         if not statistic.is_valid:
@@ -39,6 +39,7 @@ def boot(data, statistic, group_cols=None, output_cols=None, r=10000, **kwargs):
     if isinstance(data, np.ndarray):
         if data.ndim == 1:
             for _ in range(r):
+                #boot_sample is 1 iteration of the bootstrap algorithm
                 boot_sample = np.random.choice(data, sample_size, replace=True)
                 results.append(func(boot_sample))
             return Results(results, func, func(data), data)
@@ -52,7 +53,7 @@ def boot(data, statistic, group_cols=None, output_cols=None, r=10000, **kwargs):
     elif isinstance(data, pd.DataFrame):
         if len(data.columns) == 1:
             for _ in range(r):
-                boot_sample = data.sample(n=sample_size, replace=True).as_matrix()
+                boot_sample = data.sample(n=sample_size, replace=True)#.as_matrix()
                 results.append(func(boot_sample))
             return Results(results, func, func(data), data)
         else:
