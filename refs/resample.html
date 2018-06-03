@@ -96,7 +96,7 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>results</strong> (<em>np.array</em>) &#8211; array that contains the estimate             for every bootstrap replication</li>
-<li><strong>statistic</strong> (<em>function</em>) &#8211; statistic to be calculated</li>
+<li><strong>statistic</strong> (<em>function</em>) &#8211; statistic that was calculated</li>
 <li><strong>observed</strong> (<em>int</em><em>, </em><em>float</em><em>, </em><em>np.array</em>) &#8211; the sample statistic from the original data</li>
 <li><strong>data</strong> (<em>np.array</em><em>, </em><em>pd.Series</em><em>, </em><em>pd.DataFrame</em>) &#8211; the original data</li>
 <li><strong>group_cols</strong> (<em>list</em>) &#8211; group columns for data, default is none</li>
@@ -157,8 +157,9 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>col</strong> (<em>int</em>) &#8211; y index of the variable to plot</li>
+<li><strong>row</strong> (<em>int</em>) &#8211; x index of the variable to plot (requires col)</li>
 <li><strong>bins</strong> (<em>int</em>) &#8211; number of bins for the histogram</li>
-<li><strong>col</strong> (<em>int</em>) &#8211; index of the variable to plot</li>
 </ul>
 </td>
 </tr>
