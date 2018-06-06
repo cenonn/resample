@@ -57,7 +57,7 @@
 <span id="resample-boot"></span><h2>resample.boot<a class="headerlink" href="#module-resample.boot" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="resample.boot.boot">
-<code class="descclassname">resample.boot.</code><code class="descname">boot</code><span class="sig-paren">(</span><em>data</em>, <em>statistic</em>, <em>group_cols=None</em>, <em>output_cols=None</em>, <em>r=10000</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#resample.boot.boot" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">resample.boot.</code><code class="descname">boot</code><span class="sig-paren">(</span><em>data</em>, <em>statistic</em>, <em>group_cols=None</em>, <em>output_cols=None</em>, <em>r=1000</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#resample.boot.boot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates UnivariateResult or MultivariateResult objects.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -126,6 +126,17 @@
 <dt id="resample.result.Results.ci">
 <code class="descname">ci</code><span class="sig-paren">(</span><em>col=None</em>, <em>row=None</em>, <em>confidence=0.95</em>, <em>kind='efron'</em><span class="sig-paren">)</span><a class="headerlink" href="#resample.result.Results.ci" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate an interval estimate of the statistic</p>
+<p>Efron &#8216;efron&#8217;: 
+<img src="../_images/mathmpl/math-8c9aaeeb8b.png" style="position: relative; bottom: -8px"/></p>
+<p>Location percentile &#8216;loc_percentile&#8217;:
+<img src="../_images/mathmpl/math-cf32d960db.png" style="position: relative; bottom: -8px"/></p>
+<p>Scale percentile &#8216;scale_percentile&#8217;:
+<img src="../_images/mathmpl/math-5a16590a65.png" style="position: relative; bottom: -10px"/></p>
+<p>Bias corrected and accelerated &#8216;BCa&#8217;:
+<img src="../_images/mathmpl/math-a8104a7755.png" style="position: relative; bottom: -8px"/>
+where</p>
+<p><img src="../_images/mathmpl/math-f217a48db8.png" style="position: relative; bottom: -17px"/></p>
+<p><img src="../_images/mathmpl/math-7b831bb230.png" style="position: relative; bottom: -17px"/></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -150,8 +161,8 @@
 
 <dl class="method">
 <dt id="resample.result.Results.plot">
-<code class="descname">plot</code><span class="sig-paren">(</span><em>col=None</em>, <em>row=None</em>, <em>bins=30</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#resample.result.Results.plot" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a histogram of the bootstrap distribution</p>
+<code class="descname">plot</code><span class="sig-paren">(</span><em>col=None</em>, <em>row=None</em>, <em>bins=30</em>, <em>figsize=(6</em>, <em>4)</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#resample.result.Results.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create histograms of the bootstrap distribution</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -160,6 +171,7 @@
 <li><strong>col</strong> (<em>int</em>) &#8211; y index of the variable to plot</li>
 <li><strong>row</strong> (<em>int</em>) &#8211; x index of the variable to plot (requires col)</li>
 <li><strong>bins</strong> (<em>int</em>) &#8211; number of bins for the histogram</li>
+<li><strong>figsize</strong> (<em>tuple</em>) &#8211; size of figure in inches</li>
 </ul>
 </td>
 </tr>
