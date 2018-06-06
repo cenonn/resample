@@ -6,7 +6,7 @@ from .statistic import Statistic
 from .utility import group_res, output_res
 
 
-def boot(data, statistic, group_cols=None, output_cols=None, r=10000, **kwargs):
+def boot(data, statistic, group_cols=None, output_cols=None, r=1000, **kwargs):
     """Creates UnivariateResult or MultivariateResult objects.
 
         :param data: input data to be bootstrapped
@@ -53,7 +53,7 @@ def boot(data, statistic, group_cols=None, output_cols=None, r=10000, **kwargs):
     elif isinstance(data, pd.DataFrame):
         if len(data.columns) == 1:
             for _ in range(r):
-                boot_sample = data.sample(n=sample_size, replace=True)#.as_matrix()
+                boot_sample = data.sample(n=sample_size, replace=True)
                 results.append(func(boot_sample))
             return Results(results, func, func(data), data)
         else:
@@ -74,10 +74,13 @@ def boot(data, statistic, group_cols=None, output_cols=None, r=10000, **kwargs):
                     return Results(results, func, func(data), data)
                 else:
                     X, y = output_res(data, output_cols)
-                    return Results(results, func, func(X, y), data, output_cols=output_cols)
+                    return Results(results, func, func(X, y), data, \
+                                    output_cols=output_cols)
             else:
+                #group data and get observed
                 observed, grouped_data = group_res(data, group_cols, func)
                 observed = np.asarray(observed)
+                #perform bootstrap
                 for _ in range(r):
                     current_iter = []
                     for _, val in grouped_data.items():

@@ -68,28 +68,32 @@ class Results:
         else:
             return np.apply_along_axis(center_func, 0, self.results) - self.bias()
 
-    def plot(self, col=None, row=None, bins=30, **kwargs):
-        """Create a histogram of the bootstrap distribution
+    def plot(self, col=None, row=None, bins=30, figsize=(6, 4), **kwargs):
+        """Create histograms of the bootstrap distribution
 
             :param col: y index of the variable to plot
             :param row: x index of the variable to plot (requires col)
             :param bins: number of bins for the histogram
+            :param figsize: size of figure in inches
             :type col: int
             :type row: int
             :type bins: int
+            :type figsize: tuple
         """
-        res_shape = len(self.shape)
-        if col is None and row is None:
+        res_shape = len(self.shape) #determines how many histrograms to make
+        if col is None and row is None: #make all possible histograms
             if res_shape == 1:
+                plt.figure(figsize=figsize)
                 plt.hist(self.results, bins=bins, **kwargs)
             elif res_shape == 2:
                 num_plots = self.shape[1]
-                plot_single(self.results, num_plots, bins, **kwargs)
+                plot_single(self.results, num_plots, bins, figsize, **kwargs)
 
             elif res_shape == 3:
                 x_plots = self.shape[1]
                 y_plots = self.shape[2]
-                fig, axes = plt.subplots(x_plots, y_plots, sharey=True)
+                fig, axes = plt.subplots(x_plots, y_plots, 
+                                                figsize=figsize, sharey=True)
                 axes_iter = np.nditer(axes, flags=["refs_ok"])
 
                 for x in range(x_plots):
@@ -101,11 +105,12 @@ class Results:
 
         elif col is not None and row is None:
             if res_shape == 2:
-                plt.hist(self.results[:, col], bins=bins, **kwargs)
+                plt.hist(self.results[:, col], figsize=figsize,
+                                                    bins=bins, **kwargs)
             elif res_shape == 3:
                 col_vals = self.results[:, :, col]
                 num_plots = col_vals.shape[1]
-                plot_single(col_vals, num_plots, bins, **kwargs)
+                plot_single(col_vals, num_plots, bins, figsize, **kwargs)
 
         elif col is None and row is not None:
             raise Exception("provide column to plot")
@@ -114,6 +119,24 @@ class Results:
 
     def ci(self, col=None, row=None, confidence=0.95, kind='efron'):
         """Calculate an interval estimate of the statistic
+
+            Efron 'efron': 
+            :math:`(\\hat{\\theta}^{*(\\alpha)},\\hat{\\theta}^{*(1-\\alpha)})`
+            
+
+            Location percentile 'loc_percentile':
+            :math:`(2\\theta-U, 2\\theta-L)`
+
+            Scale percentile 'scale_percentile':
+            :math:`(\\frac{\\theta^2}{U}, \\frac{\\theta^2}{L})`
+
+            Bias corrected and accelerated 'BCa':
+            :math:`(\\hat{\\theta}^{*(\\alpha_1)},\\hat{\\theta}^{*(\\alpha_2)})`
+            where
+
+            :math:`\\alpha_1=\\Phi(\\hat{z_0}+\\frac{\\hat{z_0}+z^{(\\alpha)}}{1-\\hat{\\alpha}(\\hat{z_0}+z^{(\\alpha)})})`
+
+            :math:`\\alpha_1=\\Phi(\\hat{z_0}+\\frac{\\hat{z_0}+z^{(1-\\alpha)}}{1-\\hat{\\alpha}(\\hat{z_0}+z^{(1-\\alpha)})})`
 
             :param col: column to plot
             :param row: row to plot
@@ -176,7 +199,7 @@ class Results:
                                 current_res = self.statistic(X, y)[row, col]
                             theta_i.append(current_res)
                     else:
-                        current_res, _ = group_res(current_iter,\
+                        current_res, _ = group_res(current_iter,
                                             self.group_cols, self.statistic)
                         theta_i.append(current_res)
             else:
