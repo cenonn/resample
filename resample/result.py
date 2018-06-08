@@ -92,7 +92,7 @@ class Results:
             elif res_shape == 3:
                 x_plots = self.shape[1]
                 y_plots = self.shape[2]
-                fig, axes = plt.subplots(x_plots, y_plots, 
+                fig, axes = plt.subplots(x_plots, y_plots,
                                                 figsize=figsize, sharey=True)
                 axes_iter = np.nditer(axes, flags=["refs_ok"])
 
@@ -120,9 +120,8 @@ class Results:
     def ci(self, col=None, row=None, confidence=0.95, kind='efron'):
         """Calculate an interval estimate of the statistic
 
-            Efron 'efron': 
+            Efron 'efron':
             :math:`(\\hat{\\theta}^{*(\\alpha)},\\hat{\\theta}^{*(1-\\alpha)})`
-            
 
             Location percentile 'loc_percentile':
             :math:`(2\\theta-U, 2\\theta-L)`
@@ -132,11 +131,20 @@ class Results:
 
             Bias corrected and accelerated 'BCa':
             :math:`(\\hat{\\theta}^{*(\\alpha_1)},\\hat{\\theta}^{*(\\alpha_2)})`
+
             where
 
             :math:`\\alpha_1=\\Phi(\\hat{z_0}+\\frac{\\hat{z_0}+z^{(\\alpha)}}{1-\\hat{\\alpha}(\\hat{z_0}+z^{(\\alpha)})})`
 
-            :math:`\\alpha_1=\\Phi(\\hat{z_0}+\\frac{\\hat{z_0}+z^{(1-\\alpha)}}{1-\\hat{\\alpha}(\\hat{z_0}+z^{(1-\\alpha)})})`
+            :math:`\\alpha_2=\\Phi(\\hat{z_0}+\\frac{\\hat{z_0}+z^{(1-\\alpha)}}{1-\\hat{\\alpha}(\\hat{z_0}+z^{(1-\\alpha)})})`
+
+            and
+
+            :math:`\\hat{z}_0=\\Phi^{-1}(\\frac{\#\{\\hat{\\theta}^*(b)<\\hat{\\theta}\}}{B})`
+
+            :math:`\\hat{\\alpha}=\\frac{\\sum_{i=1}^n(\\hat{\\theta}_{(.)}-\\hat{\\theta}_{(i)})^3}{6\{\\sum_{i=1}^n(\\hat{\\theta}_{(.)}-\\hat{\\theta}_{(i)})^2\}^{3/2}}`
+
+            :math:`.`
 
             :param col: column to plot
             :param row: row to plot
@@ -162,7 +170,7 @@ class Results:
             res = self.results[:, row, col]
             obs = self.observed[row, col]
         else:
-            raise Exception("provide at least column to plot")
+            raise Exception("column argument needs to be specified to use row argument")
 
         quantile = 100*(1 - confidence)/2
         L, U = np.percentile(res, quantile), np.percentile(res, 100 - quantile)
@@ -175,8 +183,7 @@ class Results:
             return obs ** 2 / U, obs ** 2 / L
         elif kind == 'BCa':
             # calculate bias-correction
-            count = sum(res < obs)
-            z_hat_nought = norm.ppf(count / len(res))
+            z_hat_nought = norm.ppf((res < obs).mean())
             if np.isinf(z_hat_nought):
                 raise Exception("bias-correction is inf. try raising value of r")
 

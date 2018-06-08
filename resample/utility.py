@@ -47,27 +47,27 @@ def output_res(data, output_cols):
         y = data[output_cols]
     return X, y
 
-def bca_endpoints(z_hat_nought, a_hat, conf):
+def bca_endpoints(z_hat_nought, a_hat, percentile):
     """Calculate an endpoint for BCa
 
         :param z_hat_nought: bias correction
         :param a_hat: acceleration component
-        :param conf: confidence value for the endpoint
+        :param percentile: percentile for the endpoint
         :type z_hat_nought: float
         :type a_hat: float
-        :type conf: float
+        :type percentile: float
         :return: the percentile value
         :rtype: float
 
     """
-    num = z_hat_nought + norm.ppf(conf)
-    den = 1 - a_hat * (z_hat_nought + norm.ppf(conf))
+    num = z_hat_nought + norm.ppf(percentile)
+    den = 1 - a_hat * (z_hat_nought + norm.ppf(percentile))
     a = 100 * norm.cdf(z_hat_nought + (num / den))
     return a
 
 def plot_single(data, num_plots, bins, figsize, **kwargs):
     """Create set of plots
-        
+
         :param data: values to plot
         :param num_plots: number of plots
         :param bins: number of bins for the histogram
@@ -81,4 +81,4 @@ def plot_single(data, num_plots, bins, figsize, **kwargs):
     for ax, i in zip(axes, range(0, num_plots)):
         current_var = data[:,i]
         ax.hist(current_var, bins=bins, **kwargs)
-    
+

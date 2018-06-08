@@ -74,7 +74,7 @@ def boot(data, statistic, group_cols=None, output_cols=None, r=1000, **kwargs):
                     return Results(results, func, func(data), data)
                 else:
                     X, y = output_res(data, output_cols)
-                    return Results(results, func, func(X, y), data, \
+                    return Results(results, func, func(X, y), data, 
                                     output_cols=output_cols)
             else:
                 #group data and get observed
