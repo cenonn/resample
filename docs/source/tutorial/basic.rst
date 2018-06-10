@@ -1,42 +1,116 @@
+.. _basic:
+
++++++++++++++++++++++++++++++++++++
 Basic Tutorial
-===================================
++++++++++++++++++++++++++++++++++++
+Throughout this tutorial, we will be using two datasets from Efron's book,
+*An Introduction to the Bootstrap*. 
+
+The first dataset, from Mardia, Kent, and
+Biddy (1979), contains information  on 88 students who took examinations in 
+five subjects. It is avavilable to download :download:`here <score.csv>`. The 
+first five rows are below: 
+
+=== === === === ===
+ 
+mec vec alg ana sta
+ 
+=== === === === ===
+77  82  67  67  81
+63  78  80  70  81
+75  73  71  66  81
+55  72  63  70  68
+63  63  65  70  63
+=== === === === ===
+
+The second dataset contains information about the amount of an anti-inflammatory
+hormone (mg) in 27 devices. It is available to download :download:`here
+<hormone.csv>`. The first five rows are below:
+
+====== ====== ======
+
+ lot    hrs   amount
+
+====== ====== ======
+A      99     25.8
+A      152    20.5
+A      293    14.3
+A      155    23.2
+A      196    20.6
+====== ====== ======
+
 
 boot()
------------------------------------
-The boot() function encompasses the actual bootstrap algorithm and is the
-fundamental piece of the package. In order to perform a univariate 
+===================================
+The ``boot`` function encompasses the actual bootstrap algorithm and is the
+fundamental piece of the package. **resample** implements the standard,
+nonparametric version of the bootstrap. In order to perform a univariate 
 bootstrap, a dataset and the estimator to be calculated are passed
-into the function::
-    
+into the function. In the below example, below we want to get a bootstrap
+estimate of the variance of mechanics test scores ::
+
     import numpy as np
     import pandas as pd
     import resample as rs
+    
+    bootstrap = rs.boot(score["mec"], np.var)
 
-    data = pd.read_csv("car_weights.data", header=None)
-    bootstrap = rs.boot(data, np.mean)
-
-The boot function will then perform 10,000 boostrap simulations by 
-default. This returns a UnivariateResults object.
+The ``boot`` function will then perform 1,000 boostrap simulations by 
+default.  
 
 A few things to note:
 
-#. The dataset needs to be either an np.array, pd.Series, or
-   univariate pd.Dataframe.
-#. The function passed can be any function, user-defined or 
-   otherwise, as long as it returns a single value.
-
+#. In a univariate scenario, the dataset passed into ``boot()`` needs to be
+   either a ``np.array``, ``pd.Series``, or univariate ``pd.DataFrame``. 
+#. The function passed can be any function, user-defined or otherwise. In the
+   simple scenario above where we only have data in one dimension, it makes
+   sense for this function to return one numeric value.
 
 Results Objects
------------------------------------
+===================================
 Results objects hold the results from all the boostrap simulations, the
 estimator that was calculated, and the sample statistic. The primary use of
-this object will usually be to calculate the standard error of our estimate::
+this object will usually be to calculate various properties about the estimate
+such as the standard error ::
 
     bootstrap.se()
 
-It can also be used to plot a histograme of the bootstrap distribution::
+It can also be used to plot a histogram of the bootstrap distribution ::
 
     bootstrap.plot()
+
+.. plot::
+
+    import pandas as pd
+    import numpy as np
+    import resample as rs
+
+    data = pd.read_csv("score.csv")
+    bootstrap = rs.boot(data["mec"], np.var)
+    bootstrap.plot()
+
+One of the most important reasons to perform a bootstrap is to calculate an
+actual estimate. Because the results are a distribution, the user needs decide
+what would be an appropriate choice of center to use as a point estimate. The
+mean and median are common choices for this ::
+
+    bootstrap.point_estimate(np.mean)
+    bootstrap.point_estimate(np.median)
+
+Another advantage of using the bootstrap for estimation is that the calculation
+of the bias of an estimator become trivial. With **resample**, the user can
+either look at bias directly or apply a bias correction to their estimate ::
+    
+    bootstrap.bias()
+    bootstrap.point_estimate(np.mean, correction=True)
+
+Often, an interval estimate is better than a point estimate. Many different
+bootstrap confidence intervals exist; **resample** allows the user to calculate
+efron, percentile, or BCa intervals be specifying the ``kind`` argument ::
+
+    bootstrap.ci(kind="efron")
+    bootstrap.ci(kind="scale_percentile")
+    bootstrap.ci(kind="BCa")
 
 
 

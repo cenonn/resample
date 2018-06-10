@@ -3,10 +3,12 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+.. _index:
+
 Welcome to resample's documentation!
 ====================================
 
-Resample is Python framework for performing bootstrap simulations.
+**resample** is Python framework for performing bootstrap estimation.
 
 
 .. toctree::
