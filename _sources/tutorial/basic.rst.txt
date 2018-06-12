@@ -55,7 +55,7 @@ estimate of the variance of mechanics test scores ::
     
     bootstrap = rs.boot(score["mec"], np.var)
 
-The ``boot`` function will then perform 1,000 boostrap simulations by 
+The ``boot`` function will then perform 1,000 bootstrap simulations by 
 default.  
 
 A few things to note:

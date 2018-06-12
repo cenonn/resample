@@ -55,6 +55,7 @@
 <span id="resample"></span><h1>resample modules<a class="headerlink" href="#resample-modules" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="module-resample.boot">
 <span id="resample-boot"></span><h2>resample.boot<a class="headerlink" href="#module-resample.boot" title="Permalink to this headline">¶</a></h2>
+<p>This module implements the nonparametric bootstrap algorithm</p>
 <dl class="function">
 <dt id="resample.boot.boot">
 <code class="descclassname">resample.boot.</code><code class="descname">boot</code><span class="sig-paren">(</span><em>data</em>, <em>statistic</em>, <em>group_cols=None</em>, <em>output_cols=None</em>, <em>r=1000</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#resample.boot.boot" title="Permalink to this definition">¶</a></dt>
@@ -85,6 +86,8 @@
 </div>
 <div class="section" id="module-resample.result">
 <span id="resample-result"></span><h2>resample.result<a class="headerlink" href="#module-resample.result" title="Permalink to this headline">¶</a></h2>
+<p>This module implements the results object that contains information
+about the results of the bootstrap</p>
 <dl class="class">
 <dt id="resample.result.Results">
 <em class="property">class </em><code class="descclassname">resample.result.</code><code class="descname">Results</code><span class="sig-paren">(</span><em>results</em>, <em>statistic</em>, <em>observed</em>, <em>data</em>, <em>group_cols=None</em>, <em>output_cols=None</em><span class="sig-paren">)</span><a class="headerlink" href="#resample.result.Results" title="Permalink to this definition">¶</a></dt>
@@ -126,7 +129,7 @@
 <dt id="resample.result.Results.ci">
 <code class="descname">ci</code><span class="sig-paren">(</span><em>col=None</em>, <em>row=None</em>, <em>confidence=0.95</em>, <em>kind='efron'</em><span class="sig-paren">)</span><a class="headerlink" href="#resample.result.Results.ci" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate an interval estimate of the statistic</p>
-<p>Efron &#8216;efron&#8217;: 
+<p>Efron &#8216;efron&#8217;:
 <img src="../_images/mathmpl/math-8c9aaeeb8b.png" style="position: relative; bottom: -8px"/></p>
 <p>Location percentile &#8216;loc_percentile&#8217;:
 <img src="../_images/mathmpl/math-cf32d960db.png" style="position: relative; bottom: -8px"/></p>
@@ -228,6 +231,7 @@
 </div>
 <div class="section" id="module-resample.statistic">
 <span id="resample-statistic"></span><h2>resample.statistic<a class="headerlink" href="#module-resample.statistic" title="Permalink to this headline">¶</a></h2>
+<p>This module implements statistics objects for validation checks</p>
 <dl class="class">
 <dt id="resample.statistic.Max">
 <em class="property">class </em><code class="descclassname">resample.statistic.</code><code class="descname">Max</code><a class="headerlink" href="#resample.statistic.Max" title="Permalink to this definition">¶</a></dt>
