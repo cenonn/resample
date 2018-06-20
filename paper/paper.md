@@ -1,5 +1,5 @@
 ---
-title: 'resample: Simple bootstraping for Python'
+title: 'resample: Simple bootstrapping for Python'
 tags:
   - Python
   - statistics
