@@ -1,5 +1,4 @@
-import pandas as pd
-import numpy as np
+"""This module contains various utility functions"""
 import matplotlib.pyplot as plt
 
 from scipy.stats import norm
@@ -19,13 +18,13 @@ def group_res(data, group_cols, statistic):
 
     """
     indices = (data.reset_index()
-                .groupby(group_cols)["index"]
-                .apply(list).to_dict())
+               .groupby(group_cols)["index"]
+               .apply(list).to_dict())
     grouped_data = {}
     for key, val in indices.items():
         grouped_data[key] = (data
-            .loc[val][data.loc[val]
-            .columns.difference(group_cols)])
+                             .loc[val][data.loc[val]
+                                       .columns.difference(group_cols)])
     current_res = statistic(*list(grouped_data.values()))
     return current_res, grouped_data
 
@@ -76,9 +75,8 @@ def plot_single(data, num_plots, bins, figsize, **kwargs):
         :type bins: int
 
     """
-    fig, axes = plt.subplots(num_plots, figsize=figsize, sharey=True)
+    _, axes = plt.subplots(num_plots, figsize=figsize, sharey=True)
 
     for ax, i in zip(axes, range(0, num_plots)):
-        current_var = data[:,i]
+        current_var = data[:, i]
         ax.hist(current_var, bins=bins, **kwargs)
-

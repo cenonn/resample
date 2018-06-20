@@ -1,3 +1,6 @@
+"""This module implements the results object that contains information
+ about the results of the bootstrap
+ """
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -92,8 +95,8 @@ class Results:
             elif res_shape == 3:
                 x_plots = self.shape[1]
                 y_plots = self.shape[2]
-                fig, axes = plt.subplots(x_plots, y_plots,
-                                                figsize=figsize, sharey=True)
+                _, axes = plt.subplots(x_plots, y_plots,
+                                       figsize=figsize, sharey=True)
                 axes_iter = np.nditer(axes, flags=["refs_ok"])
 
                 for x in range(x_plots):
@@ -106,7 +109,7 @@ class Results:
         elif col is not None and row is None:
             if res_shape == 2:
                 plt.hist(self.results[:, col], figsize=figsize,
-                                                    bins=bins, **kwargs)
+                         bins=bins, **kwargs)
             elif res_shape == 3:
                 col_vals = self.results[:, :, col]
                 num_plots = col_vals.shape[1]
@@ -207,7 +210,7 @@ class Results:
                             theta_i.append(current_res)
                     else:
                         current_res, _ = group_res(current_iter,
-                                            self.group_cols, self.statistic)
+                                                   self.group_cols, self.statistic)
                         theta_i.append(current_res)
             else:
                 index_range = np.arange(0, len(data))
@@ -225,4 +228,3 @@ class Results:
             return np.percentile(res, a1), np.percentile(res, a2)
         else:
             raise Exception("unsupported ci type")
-

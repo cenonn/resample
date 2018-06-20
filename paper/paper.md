@@ -6,8 +6,11 @@ tags:
   - bootstrap
   - simulation
 authors:
-  - name: Robert Cenon
+  - name: Robert M. Cenon
     orcid: 0000-0002-2721-1292
+    affiliation: 1
+  - name: Dennis L. Sun
+    orcid: 0000-0003-0116-2004
     affiliation: 1
 affiliations:
  - name: California Polytechnic State University, San Luis Obispo
@@ -18,39 +21,40 @@ bibliography: paper.bib
 
 # Summary
 
-Single value estimates do not provide enough information to describe a pattern; error will affect the accuracy of an estimate. Traditionally, a formula for the standard error of an estimator needs to be derived to find a numerical approximation of that accuracy. In the case of the sample mean, one of the most common estimators, a closed-form equation for its standard error exists. The problem with this approach is that even with other common estimators such as the sample median, no such equation exists (Efron 1993).
+A central goal of statistics is to understand and to quantify uncertainty. For a few specific statistics, like the sample mean, there are formulas for estimating this uncertainty. For a general statistic though, no such formula exists.
 
-The bootstrap is a statistical technique for estimating the uncertainty of a statistic developed by Bradley Efron in 1979. Its main benefit is that it is a simple algorithm that works for almost any statistic. 
+The fundamental difficulty is that "uncertainty'' describes what would happen if we were to observe repeated samples from the population, but typically we only have a single sample. The bootstrap (Efron 1979, Efron and Tibshirani 1993) is a simulation-based technique that circumvents this issue  by treating it as if it were the population and repeatedly sampling from it. The statistic can be re-calculated for each of these pseudo-samples, from which we can extract a measure of uncertainty from.  The beauty of the bootstrap is that it is a simple algorithm that works for almost any statistic.
 
-``resample`` is a Python package that creates a convenient framework for performing nonparametric bootstraps. This package allows the user to easily specify a variety of different bootstraps, aiming to fill in the gap of a general use bootstrap package in Python. Various other packages exist for bootstraps, but are built with specific cases in mind. ``resample`` achieves this as well as including the following features:
+``resample`` is a Python package that creates a convenient framework for performing the bootstrap. This package allows the user to easily specify a variety of different bootstraps, thus serving as a counterpart to the popular ``boot`` library in R.  The main features of ``resample`` include:
 
-- Calculation of various confidence intervals (i.e. Efron, Percentile, BCa)
-- Method calls to calculate standard error, point estimates, and bias
-- Quick plotting of bootstrap distributions
-- User defined estimators with validity checks
-- Specification of more complex bootstraps
+- bootstrap confidence intervals (including options to use Efron, Percentile, BCa)
+- standard errors, point estimates, and bias
+- plots of bootstrap distributions
+- user defined estimators with checks that the bootstrap is valid
+- integration with the ``pandas`` and ``numpy`` libraries
+- specification of more complex bootstraps
 
 # Example
 
-resample allows the user to define and run a bootstrap in one line. In this case, we will bootstrap the variance of the “mec” column from a DataFrame:
+resample allows the user to define and run a bootstrap in one line. As an example, we will bootstrap the variance of the "mec" column from the student scores data set (Efron and Tibshirani 1993):
 
 ```python
-bootstrap = rs.boot(data[“mec”], np.var)
+bootstrap = rs.boot(data["mec"], np.var)
 ```
 
-This will create a results object that contains the observed value from the original data, the results of simulation, methods for various estimates, plotting functionality, etc. For example, a plot of the simulation can be created by:
+This creates a ``Results`` object, which stores the original and bootstrapped statistics, in addition to having methods to calculate various estimates, plot the bootstrap distribution, etc. For example, a plot of the simulation can be obtained as follows:
 
 ```python
 bootstrap.plot()
 ```
 ![Example of basic plots](mec_var.png)
 
-resample can calculate many different confidence intervals by specifying the kind argument:
+``resample`` accommodates different confidence interval methods:
 
 ```python
 bootstrap.ci() #efron interval by default
-bootstrap.ci(kind=”loc_percentile”)
-bootstrap.ci(kind=”BCa”)
+bootstrap.ci(kind="loc_percentile")
+bootstrap.ci(kind="BCa")
 ```
 
 Full documentation with a tutorial can be accessed at <https://cenonn.github.io/resample/>.

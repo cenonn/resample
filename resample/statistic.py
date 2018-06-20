@@ -1,3 +1,4 @@
+"""This module implements statistics objects for validation checks"""
 import numpy as np
 import numbers
 
@@ -81,9 +82,9 @@ class Quantile(Statistic):
         :type q: float
     """
     def __init__(self, q):
-        if (q > 1.0 or q < 0.0):
+        if q > 1.0 or q < 0.0:
             raise Exception("q must be between 0.0 and 1.0")
-        if (q == 0.5):
+        if q == 0.5:
             super().__init__(np.median, True)
         else:
             super().__init__(lambda x: np.percentile(x, q * 100), False)

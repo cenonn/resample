@@ -1,3 +1,5 @@
+"""This module implements the nonparametric bootstrap algorithm"""
+
 import numpy as np
 import pandas as pd
 
@@ -74,8 +76,8 @@ def boot(data, statistic, group_cols=None, output_cols=None, r=1000, **kwargs):
                     return Results(results, func, func(data), data)
                 else:
                     X, y = output_res(data, output_cols)
-                    return Results(results, func, func(X, y), data, 
-                                    output_cols=output_cols)
+                    return Results(results, func, func(X, y), data,
+                                   output_cols=output_cols)
             else:
                 #group data and get observed
                 observed, grouped_data = group_res(data, group_cols, func)
@@ -94,5 +96,3 @@ def boot(data, statistic, group_cols=None, output_cols=None, r=1000, **kwargs):
                 return Results(results, func, observed, data, group_cols=group_cols)
     else:
         raise Exception("data type not supported")
-
-
