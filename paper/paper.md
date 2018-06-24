@@ -23,7 +23,7 @@ bibliography: paper.bib
 
 A central goal of statistics is to understand and to quantify uncertainty. For a few specific statistics, like the sample mean, there are formulas for estimating this uncertainty. For a general statistic though, no such formula exists.
 
-The fundamental difficulty is that "uncertainty'' describes what would happen if we were to observe repeated samples from the population, but typically we only have a single sample. The bootstrap (Efron 1979, Efron and Tibshirani 1993) is a simulation-based technique that circumvents this issue  by treating it as if it were the population and repeatedly sampling from it. The statistic can be re-calculated for each of these pseudo-samples, from which we can extract a measure of uncertainty from.  The beauty of the bootstrap is that it is a simple algorithm that works for almost any statistic.
+The fundamental difficulty is that "uncertainty'' describes what would happen if we were to observe repeated samples from the population, but typically we only have a single sample. The bootstrap [@Efron93] is a simulation-based technique that circumvents this issue  by treating it as if it were the population and repeatedly sampling from it. The statistic can be re-calculated for each of these pseudo-samples, from which we can extract a measure of uncertainty from [@Davidson97].  The beauty of the bootstrap is that it is a simple algorithm that works for almost any statistic [@Hesterberg97].
 
 ``resample`` is a Python package that creates a convenient framework for performing the bootstrap. This package allows the user to easily specify a variety of different bootstraps, thus serving as a counterpart to the popular ``boot`` library in R.  The main features of ``resample`` include:
 
@@ -36,7 +36,7 @@ The fundamental difficulty is that "uncertainty'' describes what would happen if
 
 # Example
 
-resample allows the user to define and run a bootstrap in one line. As an example, we will bootstrap the variance of the "mec" column from the student scores data set (Efron and Tibshirani 1993):
+resample allows the user to define and run a bootstrap in one line. As an example, we will bootstrap the variance of the "mec" column from the student scores data set [@Efron93]:
 
 ```python
 bootstrap = rs.boot(data["mec"], np.var)
